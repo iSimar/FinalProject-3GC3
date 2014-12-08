@@ -17,8 +17,7 @@
 #  include <GL/freeglut.h>
 #endif
 #include <iostream>
-
-#include "envBlock.h"
+#include "game.h"
 
 //mode on or off constants
 const int OFF = 0;
@@ -26,30 +25,28 @@ const int ON = 1;
 
 int firstPersonMode = ON;
 
-float camPos[] = {20, 20, 20};
+float camPos[] = {50, 50, 50};
 
-float speed = 0.5;
-
-envBlock * testBlock = new envBlock(20,20,20);
-
+game * mainGame = new game();
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
     if(firstPersonMode==OFF)
         gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
     else
-        gluLookAt(0, 10, 0, 0,10,-1, 0,1,0);
-//    glutSolidSphere(2, 16, 16);
-    glTranslatef(0, 0, testBlock->translateZ);
-    testBlock->draw();
+        mainGame->setFPLook();
+    
+    mainGame->drawEnvBlocks();
+    
     glutSwapBuffers();
     
 }
 
 void updateMethod(int value){
-    testBlock->addToTranslateZ(speed);
+    mainGame->updateMethod();
     glutTimerFunc(16, updateMethod, 0);
     glutPostRedisplay();
 }
@@ -94,10 +91,23 @@ void keyboard(unsigned char key, int x, int y){
         case 'f':
             if (firstPersonMode == OFF){
                 firstPersonMode = ON;
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                gluPerspective(45, 1, 1, 100);
             }
             else{
                 firstPersonMode = OFF;
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                gluPerspective(450, 1, 1, 1000);
             }
+            break;
+        case 'n':
+            camPos[1] += 2;
+            break;
+            
+        case 'm':
+            camPos[1] -= 2;
             break;
     }
     glutPostRedisplay();

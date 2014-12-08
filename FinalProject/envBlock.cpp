@@ -19,20 +19,15 @@
 #endif
 #include <iostream>
 
-envBlock::envBlock(){
-    length = 10;
-    height = 10;
-    width = 10;
-    
-    translateZ = -100-(width/2);
-}
-
 envBlock::envBlock(float l, float w, float h){
     length = l;
-    height = w;
-    width = h;
+    height = h;
+    width = w;
+    translateZ = -100;
     
-    translateZ = -100-(width/2);
+    rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 }
 
 void envBlock::addToTranslateZ(float i){
@@ -41,29 +36,34 @@ void envBlock::addToTranslateZ(float i){
 
 void envBlock::draw(){
     glPushMatrix();
+    glColor3f(rgb[0], rgb[1], rgb[2]);
     glBegin(GL_QUADS);
-        glVertex3d(length/2, 0, width/2);
-        glVertex3d(-1*length/2, 0, width/2);
-        glVertex3d(-1*length/2, 0, -1*width/2);
-        glVertex3d(length/2, 0, -1*width/2);
+        glVertex3d(length/2, 0, 0);
+        glVertex3d(-1*length/2, 0, 0);
+        glVertex3d(-1*length/2, 0, -1*width);
+        glVertex3d(length/2, 0, -1*width);
     glEnd();
     glBegin(GL_QUADS);
-        glVertex3d(length/2, 0, width/2);
-        glVertex3d(length/2, height, width/2);
-        glVertex3d(length/2, height, -1*width/2);
-        glVertex3d(length/2, 0, -1*width/2);
+        glVertex3d(length/2, 0, 0);
+        glVertex3d(length/2, height, 0);
+        glVertex3d(length/2, height, -1*width);
+        glVertex3d(length/2, 0, -1*width);
     glEnd();
     glBegin(GL_QUADS);
-        glVertex3d(-1*length/2, 0, width/2);
-        glVertex3d(-1*length/2, height, width/2);
-        glVertex3d(-1*length/2, height, -1*width/2);
-        glVertex3d(-1*length/2, 0, -1*width/2);
+        glVertex3d(-1*length/2, 0, 0);
+        glVertex3d(-1*length/2, height, 0);
+        glVertex3d(-1*length/2, height, -1*width);
+        glVertex3d(-1*length/2, 0, -1*width);
     glEnd();
     glBegin(GL_QUADS);
-        glVertex3d(length/2, height, width/2);
-        glVertex3d(-1*length/2, height, width/2);
-        glVertex3d(-1*length/2, height, -1*width/2);
-        glVertex3d(length/2, height, -1*width/2);
+        glVertex3d(length/2, height, 0);
+        glVertex3d(-1*length/2, height, 0);
+        glVertex3d(-1*length/2, height, -1*width);
+        glVertex3d(length/2, height, -1*width);
     glEnd();
     glPopMatrix();
+}
+
+bool envBlock::isExpired(float camZ){
+    return (translateZ-width) > camZ;
 }

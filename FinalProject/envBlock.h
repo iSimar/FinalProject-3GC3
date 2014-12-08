@@ -14,12 +14,15 @@ public:
     float width;
     float height;
     
+    float rgb[3];
+    
     float translateZ;
     
-    envBlock();
     envBlock(float l, float w, float h);
     
     void addToTranslateZ(float i);
     
     void draw();
+    
+    bool isExpired(float camZ);
 };
