@@ -25,6 +25,7 @@ public:
     float age; //particle life span
     int * rgb_color; //rgb color array
     float lifespan; //lifespan of a particle
+    float translateZ = 0;
     
     //Different types of constructors
     particle(point * position, float size); //meant for trailing particle no direction - don't move
@@ -46,7 +47,7 @@ public:
      move - updates the position of the particle, updates the direction of the particle, rotation array
      and increments the age.
      */
-    void move(float gravity, float floorSize, int friction);
+    void move(float gravity, float floorSize, int friction, float envMovingSpeed);
     
     /*
      incrementAge - increments the age by 1

@@ -37,12 +37,15 @@ void game::updateMethod(){
             trainOfEnvBlocks.erase(i);
         else
             currentEnvBlock->addToTranslateZ(movingSpeed);
-        
         if(i==--trainOfEnvBlocks.end()){
-//            printf("%f\n", currentEnvBlock->translateZ);
             if(currentEnvBlock->translateZ>-100+currentEnvBlock->width)
                 trainOfEnvBlocks.push_back(new envBlock(envBlockSize[0], envBlockSize[1], envBlockSize[2]));
         }
+    }
+    
+    for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
+        particle * currentParticle = *i;
+        currentParticle->move(0.5, 100, 1, movingSpeed);
     }
 }
 
@@ -74,8 +77,11 @@ void game::screenClick(int x, int y){
     float y_world = (((screenSizeY/2)-y)/screenSizeY)*((envBlockSize[1])/2)+fpCamPos[1];
 
     listOfParticles.push_back(new particle(
-                                           new point(x_world, y_world, fpCamPos[2]-10),
-                                           1
+                                           new point(fpCamPos[0], fpCamPos[1], fpCamPos[2]-10),
+                                           new point(x_world, y_world-2, fpCamPos[2]-30),
+                                           movingSpeed*0.06,
+                                           1,
+                                           (rand()%1000)+1000
                                            )
                               );
 }

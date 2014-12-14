@@ -35,7 +35,7 @@ void display(){
     glLoadIdentity();
     
     if(firstPersonMode==OFF)
-        gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+        gluLookAt(camPos[0], camPos[1], camPos[2], 0,10,0, 0,1,0);
     else
         mainGame->setFPLook();
     

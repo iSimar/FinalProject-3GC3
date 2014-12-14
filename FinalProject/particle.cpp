@@ -101,7 +101,7 @@ int * particle::getRotationAngles(){
 float particle::getSize(){ return size; }
 
 
-void particle::move(float gravity, float floorSize, int friction){
+void particle::move(float gravity, float floorSize, int friction, float envMovingSpeed){
     
     if(isTouchingFloor(floorSize)){
         invertDirection(friction);
@@ -118,6 +118,9 @@ void particle::move(float gravity, float floorSize, int friction){
     rotation[0]+=1;
     rotation[1]+=1;
     rotation[2]+=1;
+    
+    translateZ+= envMovingSpeed;
+    
 }
 
 void particle::incrementAge(){ age++; }
@@ -153,7 +156,7 @@ void particle::renderParticle(){
     int * pRGBColor = getRGBColor(); // get particle color array
     int * pRotationAngles = getRotationAngles(); // get particle rotation angle array
     float pSize = getSize(); // get particle size
-    glTranslatef(pPosition[0], pPosition[1], pPosition[2]); //translate to the corrdinates of particle position
+    glTranslatef(pPosition[0], pPosition[1], pPosition[2]+translateZ); //translate to the corrdinates of particle position
     glColor3b(pRGBColor[0], pRGBColor[1], pRGBColor[2]); // set the color to particle color
     glRotatef(pRotationAngles[0], 1, 0, 0); //rotation angle in x axis
     glRotatef(pRotationAngles[1], 0, 1, 0); //rotation angle in y axis
