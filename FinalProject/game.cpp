@@ -70,7 +70,7 @@ void game::setFPLook(){
 }
 
 void game::screenClick(int x, int y){
-    printf("%i %f\n",x,(screenSizeY - y));
+//    printf("%i %f\n",x,(screenSizeY - y));
     /* Converting x and y to world x and y
      */
     float x_world = -1*(((screenSizeX/2)-x)/screenSizeX)*((envBlockSize[0])/2);
