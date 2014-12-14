@@ -9,18 +9,27 @@
 #include <stdio.h>
 #include <list>
 #include "envBlock.h"
+#include "particle.h"
 
 using namespace std;
 
 class game{
 public:
+    float screenSizeX = 600;
+    float screenSizeY = 600;
+    
     float fpCamPos[3];
     float movingSpeed = 1;
+    
+    float envBlockSize[3];
     list<envBlock *> trainOfEnvBlocks;
+    list<particle *> listOfParticles;
     
     game();
     
     void updateMethod();
-    void drawEnvBlocks();
+    void draw();
     void setFPLook();
+    
+    void screenClick(int x, int y);
 };

@@ -19,8 +19,15 @@
 #endif
 #include <iostream>
 
+
 game::game(){
-    trainOfEnvBlocks.push_back(new envBlock(20, 20, 20));
+    fpCamPos[0] = 0;
+    fpCamPos[1] = 10;
+    fpCamPos[2] = 0;
+    envBlockSize[0] = 20; //length
+    envBlockSize[1] = 20; //width
+    envBlockSize[2] = 20; //height
+    trainOfEnvBlocks.push_back(new envBlock(envBlockSize[0], envBlockSize[1], envBlockSize[2]));
 }
 
 void game::updateMethod(){
@@ -34,12 +41,12 @@ void game::updateMethod(){
         if(i==--trainOfEnvBlocks.end()){
 //            printf("%f\n", currentEnvBlock->translateZ);
             if(currentEnvBlock->translateZ>-100+currentEnvBlock->width)
-                trainOfEnvBlocks.push_back(new envBlock(20, 20, 20));
+                trainOfEnvBlocks.push_back(new envBlock(envBlockSize[0], envBlockSize[1], envBlockSize[2]));
         }
     }
 }
 
-void game::drawEnvBlocks(){
+void game::draw(){
     for(list<envBlock *>::iterator i = trainOfEnvBlocks.begin(); i != trainOfEnvBlocks.end(); ++i){
         envBlock * currentEnvBlock = *i;
         glPushMatrix();
@@ -47,8 +54,28 @@ void game::drawEnvBlocks(){
         currentEnvBlock->draw();
         glPopMatrix();
     }
+    
+    for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
+        particle * currentParticle = *i;
+        currentParticle->renderParticle();
+    }
+    
 }
 
 void game::setFPLook(){
-    gluLookAt(0, 10, 0, 0,10,-1, 0,1,0);
+    gluLookAt(fpCamPos[0], fpCamPos[1], fpCamPos[2], fpCamPos[0],fpCamPos[1],fpCamPos[2]-1, 0,1,0);
+}
+
+void game::screenClick(int x, int y){
+    printf("%i %f\n",x,(screenSizeY - y));
+    /* Converting x and y to world x and y
+     */
+    float x_world = -1*(((screenSizeX/2)-x)/screenSizeX)*((envBlockSize[0])/2);
+    float y_world = (((screenSizeY/2)-y)/screenSizeY)*((envBlockSize[1])/2)+fpCamPos[1];
+
+    listOfParticles.push_back(new particle(
+                                           new point(x_world, y_world, fpCamPos[2]-10),
+                                           1
+                                           )
+                              );
 }

@@ -39,7 +39,7 @@ void display(){
     else
         mainGame->setFPLook();
     
-    mainGame->drawEnvBlocks();
+    mainGame->draw();
     
     glutSwapBuffers();
     
@@ -49,6 +49,14 @@ void updateMethod(int value){
     mainGame->updateMethod();
     glutTimerFunc(16, updateMethod, 0);
     glutPostRedisplay();
+}
+
+void mouse(int btn, int state, int x, int y){
+    if(btn == GLUT_LEFT_BUTTON){
+        if(state == GLUT_DOWN){
+            mainGame->screenClick(x, y);
+        }
+    }
 }
 
 void special(int key, int x, int y){
@@ -134,6 +142,7 @@ int main(int argc, char ** argv){
     glutDisplayFunc(display);	//registers "display" as the display callback function
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(special);
+    glutMouseFunc(mouse);
     
     glutTimerFunc(16, updateMethod, 0);
     

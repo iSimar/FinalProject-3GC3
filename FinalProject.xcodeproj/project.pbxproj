@@ -12,6 +12,8 @@
 		9A8A41151A34BAE10024B665 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A8A41141A34BAE10024B665 /* OpenGL.framework */; };
 		9A8A41181A34BC020024B665 /* envBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A8A41161A34BC020024B665 /* envBlock.cpp */; };
 		9A9EEC101A3D1145003A19DA /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A9EEC0F1A3D1145003A19DA /* game.cpp */; };
+		9AF001591A3E0FB000B4F460 /* point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AF001571A3E0FB000B4F460 /* point.cpp */; };
+		9AF0015C1A3E103A00B4F460 /* particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0015A1A3E103A00B4F460 /* particle.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +37,10 @@
 		9A8A41171A34BC020024B665 /* envBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = envBlock.h; sourceTree = "<group>"; };
 		9A9EEC0F1A3D1145003A19DA /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
 		9A9EEC111A3D114E003A19DA /* game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
+		9AF001571A3E0FB000B4F460 /* point.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = point.cpp; sourceTree = "<group>"; };
+		9AF001581A3E0FB000B4F460 /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
+		9AF0015A1A3E103A00B4F460 /* particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particle.cpp; sourceTree = "<group>"; };
+		9AF0015B1A3E103A00B4F460 /* particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particle.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +82,10 @@
 				9A8A410B1A34BABE0024B665 /* main.cpp */,
 				9A8A41161A34BC020024B665 /* envBlock.cpp */,
 				9A8A41171A34BC020024B665 /* envBlock.h */,
+				9AF001571A3E0FB000B4F460 /* point.cpp */,
+				9AF001581A3E0FB000B4F460 /* point.h */,
+				9AF0015A1A3E103A00B4F460 /* particle.cpp */,
+				9AF0015B1A3E103A00B4F460 /* particle.h */,
 			);
 			path = FinalProject;
 			sourceTree = "<group>";
@@ -136,7 +146,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AF001591A3E0FB000B4F460 /* point.cpp in Sources */,
 				9A8A410C1A34BABE0024B665 /* main.cpp in Sources */,
+				9AF0015C1A3E103A00B4F460 /* particle.cpp in Sources */,
 				9A8A41181A34BC020024B665 /* envBlock.cpp in Sources */,
 				9A9EEC101A3D1145003A19DA /* game.cpp in Sources */,
 			);
