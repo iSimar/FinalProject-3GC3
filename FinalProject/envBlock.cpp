@@ -13,11 +13,11 @@
 #  include <OpenGL/glu.h>
 #  include <GLUT/glut.h>
 #else
-#  include <windows.h>
 #  include <GL/gl.h>
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
 #endif
+#include <windows.h>
 #include <iostream>
 
 envBlock::envBlock(float l, float w, float h){
