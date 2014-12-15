@@ -32,9 +32,28 @@ int firstPersonMode = ON;
 
 float camPos[] = {50, 50, 50};
 
+float lightpos[] = {-10, 20, -20, 1.0};
+float lightpos1[] = {10, 20, -20, 1.0};
+float lightpos2[] = {-10, 0, -20, 1.0};
+float lightpos3[] = {10, 0, -20, 1.0};
+float lightDir[] = {0, 0 ,1};
+
 game * mainGame = new game();
 
 void display(){
+    //setup of material values for light
+    float m_amb[] = {0.23, 0.22, 0.23, 1.0};
+    float m_dif[] = {0.2, 0.2, 0.2, 1.0};
+    float m_spec[] = {0.10, 0.1, 0.1, 1.0};
+    float shiny = 27;
+    
+//    enable material
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_dif);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+    glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -121,18 +140,23 @@ void keyboard(unsigned char key, int x, int y){
 void init(void){
     glClearColor(0, 0, 0, 0);
     glColor3f(1, 1, 1);
-    
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    glEnable(GL_COLOR_MATERIAL);
     
-    gluPerspective(45, 1, 1, 100);
-
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-
-    GLfloat lightpos[] = {0, -50, -50, 1.0};
+    glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT2);
+    glEnable(GL_LIGHT3);
+    
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
+    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
+    glLightfv(GL_LIGHT2, GL_POSITION, lightpos2);
+    glLightfv(GL_LIGHT3, GL_POSITION, lightpos3);
+    
+    gluPerspective(45, 1, 1, 100);
 }
 
 int main(int argc, char ** argv){
@@ -151,8 +175,7 @@ int main(int argc, char ** argv){
     
     glEnable(GL_DEPTH_TEST);
 
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial (GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+//    glColorMaterial (GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
     init();
     glutMainLoop();
