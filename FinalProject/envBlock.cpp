@@ -17,7 +17,11 @@
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
 #endif
-#include <windows.h>
+
+#ifdef _WIN32
+#   include <windows.h>
+#endif
+
 #include <iostream>
 
 envBlock::envBlock(float l, float w, float h){

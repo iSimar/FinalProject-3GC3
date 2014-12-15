@@ -16,8 +16,11 @@
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
 #endif
- 
-#include <windows.h>
+
+#ifdef _WIN32
+#   include <windows.h>
+#endif
+
 #include <iostream>
 #include "game.h"
 
@@ -123,6 +126,13 @@ void init(void){
     glLoadIdentity();
     
     gluPerspective(45, 1, 1, 100);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    GLfloat lightpos[] = {0, 50, -30, 1.0};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+
 }
 
 int main(int argc, char ** argv){
@@ -140,6 +150,10 @@ int main(int argc, char ** argv){
     glutTimerFunc(16, updateMethod, 0);
     
     glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial (GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
     init();
     glutMainLoop();
     return 0;
