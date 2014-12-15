@@ -17,6 +17,7 @@
 #  include <GL/freeglut.h>
 #endif
 #include <iostream>
+
 #include "game.h"
 
 //mode on or off constants

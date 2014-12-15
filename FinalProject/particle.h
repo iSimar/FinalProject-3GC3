@@ -57,12 +57,13 @@ public:
     /*
      isExpired - returns a bool, checks if a particle is expired with the given floorsize
      */
+    bool isExpired();
     bool isExpired(float floorSize);
     
     /*
      isTouchingFloor - returns bool, checks if the a particle is touching the flat plane, given the floor size
      */
-    bool isTouchingFloor(float floorSize);
+    bool isTouchingFloor(float camPosZ);
     
     /*
      invertDirection - inverts the direction vector

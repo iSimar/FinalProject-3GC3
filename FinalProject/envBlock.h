@@ -7,6 +7,11 @@
 //
 
 #include <stdio.h>
+#include <list>
+#include "particle.h"
+#include "surface.h"
+
+using namespace std;
 
 class envBlock{
 public:
@@ -18,6 +23,13 @@ public:
     
     float translateZ;
     
+    float floor[4][3];
+    float rightWall[4][3];
+    float leftWall[4][3];
+    float ceiling[4][3];
+    
+    list<surface *> listOfSurfaces;
+    
     envBlock(float l, float w, float h);
     
     void addToTranslateZ(float i);
@@ -25,4 +37,11 @@ public:
     void draw();
     
     bool isExpired(float camZ);
+    
+    void setFloorWallsCeilingPoints();
+    
+    list<surface *> getSurfaces();
+    
+    void checkCollisions(list<particle *> listOfParticles);
+    
 };

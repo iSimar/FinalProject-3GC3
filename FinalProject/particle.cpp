@@ -103,9 +103,9 @@ float particle::getSize(){ return size; }
 
 void particle::move(float gravity, float floorSize, int friction, float envMovingSpeed){
     
-    if(isTouchingFloor(floorSize)){
-        invertDirection(friction);
-    }
+//    if(isTouchingFloor(floorSize)){
+//        invertDirection(friction);
+//    }
     
     position->x += direction->x * speed;
     position->y += direction->y  * speed;
@@ -125,11 +125,18 @@ void particle::move(float gravity, float floorSize, int friction, float envMovin
 
 void particle::incrementAge(){ age++; }
 
-bool particle::isExpired(float floorSize){
-    if(position->y<-2 || age>lifespan){
+bool particle::isExpired(){
+    return age>lifespan;
+}
+
+bool particle::isExpired(float camPosZ){
+    if(age>lifespan){
         return 1;
     }
-    return 0;
+    float * temp = getPosition();
+    float realZPos =  translateZ + temp[2];
+    printf("%f\n", realZPos);
+    return realZPos > camPosZ;
 }
 
 bool particle::isTouchingFloor(float floorSize){
@@ -146,8 +153,9 @@ bool particle::isTouchingFloor(float floorSize){
 void particle::invertDirection(int friction){
     direction->y*=-1;
     if(friction==1){
-        speed*=0.9;
+        speed*=0.50;
     }
+    position->y+=1;
 }
 
 void particle::renderParticle(){

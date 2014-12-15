@@ -17,6 +17,7 @@
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
 #endif
+
 #include <iostream>
 
 
@@ -35,8 +36,10 @@ void game::updateMethod(){
         envBlock * currentEnvBlock = *i;
         if(currentEnvBlock->isExpired(fpCamPos[2]))
             trainOfEnvBlocks.erase(i);
-        else
+        else{
             currentEnvBlock->addToTranslateZ(movingSpeed);
+            currentEnvBlock->checkCollisions(listOfParticles);
+        }
         if(i==--trainOfEnvBlocks.end()){
             if(currentEnvBlock->translateZ>-100+currentEnvBlock->width)
                 trainOfEnvBlocks.push_back(new envBlock(envBlockSize[0], envBlockSize[1], envBlockSize[2]));
@@ -45,7 +48,12 @@ void game::updateMethod(){
     
     for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
         particle * currentParticle = *i;
-        currentParticle->move(0.5, 100, 1, movingSpeed);
+        if(currentParticle->isExpired(fpCamPos[2])){
+            listOfParticles.erase(i);
+        }
+        else{
+            currentParticle->move(0.5, 100, 1, movingSpeed);
+        }
     }
 }
 
@@ -81,7 +89,7 @@ void game::screenClick(int x, int y){
                                            new point(x_world, y_world-2, fpCamPos[2]-30),
                                            movingSpeed*0.06,
                                            1,
-                                           (rand()%1000)+1000
+                                           300
                                            )
                               );
 }

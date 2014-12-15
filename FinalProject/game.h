@@ -10,6 +10,7 @@
 #include <list>
 #include "envBlock.h"
 #include "particle.h"
+#include "surface.h"
 
 using namespace std;
 

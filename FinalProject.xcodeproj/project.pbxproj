@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A3E4CFF1A3E663600FDC8A9 /* surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */; };
 		9A8A410C1A34BABE0024B665 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A8A410B1A34BABE0024B665 /* main.cpp */; };
 		9A8A41131A34BAD00024B665 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A8A41121A34BAD00024B665 /* GLUT.framework */; };
 		9A8A41151A34BAE10024B665 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A8A41141A34BAE10024B665 /* OpenGL.framework */; };
@@ -29,6 +30,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = surface.cpp; sourceTree = "<group>"; };
+		9A3E4CFE1A3E663600FDC8A9 /* surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = surface.h; sourceTree = "<group>"; };
 		9A8A41081A34BABE0024B665 /* FinalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FinalProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A8A410B1A34BABE0024B665 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9A8A41121A34BAD00024B665 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -86,6 +89,8 @@
 				9AF001581A3E0FB000B4F460 /* point.h */,
 				9AF0015A1A3E103A00B4F460 /* particle.cpp */,
 				9AF0015B1A3E103A00B4F460 /* particle.h */,
+				9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */,
+				9A3E4CFE1A3E663600FDC8A9 /* surface.h */,
 			);
 			path = FinalProject;
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 				9AF0015C1A3E103A00B4F460 /* particle.cpp in Sources */,
 				9A8A41181A34BC020024B665 /* envBlock.cpp in Sources */,
 				9A9EEC101A3D1145003A19DA /* game.cpp in Sources */,
+				9A3E4CFF1A3E663600FDC8A9 /* surface.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
