@@ -154,6 +154,24 @@ void keyboard(unsigned char key, int x, int y){
         case 'm':
             camPos[1] -= 2;
             break;
+        case 'a':
+            mainGame->fpCamPos[0] -= 2;
+            if(mainGame->fpCamPos[0]< -8){
+                mainGame->fpCamPos[0] = -8;
+            }
+            break;
+        case 'd':
+            mainGame->fpCamPos[0] += 2;
+            if(mainGame->fpCamPos[0] > 8){
+                mainGame->fpCamPos[0] = 8;
+            }
+            break;
+        case 'w':
+            mainGame->speedup();
+            break;
+        case 's':
+            mainGame->speeddown();
+            break;
     }
     glutPostRedisplay();
 }

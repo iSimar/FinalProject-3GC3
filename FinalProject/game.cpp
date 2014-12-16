@@ -31,6 +31,20 @@ game::game(){
     trainOfEnvBlocks.push_back(new envBlock(envBlockSize[0], envBlockSize[1], envBlockSize[2]));
 }
 
+void game::speedup(){
+    movingSpeed += 0.2;
+    if(movingSpeed >= 2){
+        movingSpeed = 2;
+    }
+}
+
+void game::speeddown(){
+    movingSpeed -= 0.2;
+    if(movingSpeed <= 0){
+        movingSpeed = 1;
+    }
+}
+
 void game::updateMethod(){
     for(list<envBlock *>::iterator i = trainOfEnvBlocks.begin(); i != trainOfEnvBlocks.end(); ++i){
         envBlock * currentEnvBlock = *i;

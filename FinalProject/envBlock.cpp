@@ -26,8 +26,10 @@ envBlock::envBlock(float l, float w, float h){
     translateZ = -100;
     
     rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    rgb[1] = rgb[0];
+    rgb[2] = rgb[0];
+    //rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    //rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     
     setFloorWallsCeilingPoints();
 

@@ -31,6 +31,9 @@ public:
     void updateMethod();
     void draw();
     void setFPLook();
+
+    void speedup();
+    void speeddown();
     
     void screenClick(int x, int y);
 };
