@@ -74,7 +74,7 @@ void display(){
     glFogfv(GL_FOG_COLOR, fogColor);            // Set Fog Color
     glFogf(GL_FOG_DENSITY, 0.35f);              // How Dense Will The Fog Be
     glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
-    glFogf(GL_FOG_START, 45.0f);             // Fog Start Depth
+    glFogf(GL_FOG_START, 35.0f);             // Fog Start Depth
     glFogf(GL_FOG_END, 5.0f);               // Fog End Depth
     glEnable(GL_FOG);                   // Enables GL_FOG
     
