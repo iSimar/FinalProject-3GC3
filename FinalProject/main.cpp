@@ -28,30 +28,9 @@ int firstPersonMode = ON;
 
 float camPos[] = {50, 50, 50};
 
-float lightpos[] = {-10, 20, -60, 1.0};
-float lightpos1[] = {0, 10, 20, 1.0};
-float lightpos2[] = {-10, 0, -60, 1.0};
-float lightpos3[] = {10, 0, -60, 1.0};
-float lightDir[] = {0, 0 ,1};
-float lightDif[] = {1, 1, 1, 1};
-float lightSpec[] = {1, 1, 1, 1 };
-
 game * mainGame = new game();
 
 void display(){
-    //setup of material values for light
-    float m_amb[] = {0.23, 0.22, 0.23, 1.0};
-    float m_dif[] = {0.2, 0.2, 0.2, 1.0};
-    float m_spec[] = {0.10, 0.1, 0.1, 1.0};
-    float shiny = 35;
-    
-    //    enable material
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_dif);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
-    glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
-    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -146,22 +125,9 @@ void keyboard(unsigned char key, int x, int y){
 void init(void){
     glClearColor(0, 0, 0, 0);
     glColor3f(1, 1, 1);
+    
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glEnable(GL_COLOR_MATERIAL);
-    
-    glEnable(GL_LIGHTING);
-    
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
-    
-    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDif);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, lightSpec);
-    
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
     
     gluPerspective(45, 1, 1, 100);
 }
