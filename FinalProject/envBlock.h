@@ -27,14 +27,18 @@ public:
     float rightWall[4][3];
     float leftWall[4][3];
     float ceiling[4][3];
+
+    float randX;
+    float randZ;
     
     list<surface *> listOfSurfaces;
     
     envBlock(float l, float w, float h);
+    //envBlock(float l, float w, float h, int t);
     
     void addToTranslateZ(float i);
     
-    void draw();
+    void draw(int t);
     
     bool isExpired(float camZ);
     

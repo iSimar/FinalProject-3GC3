@@ -40,7 +40,7 @@ void game::speedup(){
 
 void game::speeddown(){
     movingSpeed -= 0.2;
-    if(movingSpeed <= 0){
+    if(movingSpeed <= 1){
         movingSpeed = 1;
     }
 }
@@ -49,7 +49,8 @@ void game::updateMethod(){
     for(list<envBlock *>::iterator i = trainOfEnvBlocks.begin(); i != trainOfEnvBlocks.end(); ++i){
         envBlock * currentEnvBlock = *i;
         if(currentEnvBlock->isExpired(fpCamPos[2]))
-            trainOfEnvBlocks.erase(i);
+           //trainOfEnvBlocks.erase(i)
+            ;
         else{
             currentEnvBlock->addToTranslateZ(movingSpeed);
             currentEnvBlock->checkCollisions(listOfParticles);
@@ -63,7 +64,8 @@ void game::updateMethod(){
     for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
         particle * currentParticle = *i;
         if(currentParticle->isExpired(fpCamPos[2])){
-            listOfParticles.erase(i);
+           // listOfParticles.erase(i)
+            ;
         }
         else{
             currentParticle->move(0.5, 100, 1, movingSpeed);
@@ -76,7 +78,7 @@ void game::draw(){
         envBlock * currentEnvBlock = *i;
         glPushMatrix();
         glTranslatef(0, 0, currentEnvBlock->translateZ);
-        currentEnvBlock->draw();
+        currentEnvBlock->draw(1);
         glPopMatrix();
     }
     
@@ -107,3 +109,4 @@ void game::screenClick(int x, int y){
                                            )
                               );
 }
+

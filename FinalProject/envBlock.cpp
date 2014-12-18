@@ -24,6 +24,9 @@ envBlock::envBlock(float l, float w, float h){
     height = h;
     width = w;
     translateZ = -100;
+
+    randX = rand() % 20 - 10;
+    randZ = rand() % 20 - 10;
     
     rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     rgb[1] = rgb[0];
@@ -35,11 +38,29 @@ envBlock::envBlock(float l, float w, float h){
 
 }
 
+/*
+envBlock::envBlock(float l, float w, float h, int t){
+    length = 1;
+    height = h;
+    width = w; 
+    translateZ = -100;
+
+    TYPE = t;
+
+    rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    rgb[1] = rgb[0];
+    rgb[2] = rgb[0];
+
+    setFloorWallsCeilingPoints();
+
+}
+*/
+
 void envBlock::addToTranslateZ(float i){
     translateZ+=i;
 }
 
-void envBlock::draw(){
+void envBlock::draw(int t){
     glPushMatrix();
     glColor3f(rgb[0], rgb[1], rgb[2]);
     glBegin(GL_QUADS);
@@ -59,6 +80,35 @@ void envBlock::draw(){
         glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);
     glEnd();
     glPopMatrix();
+
+    if(t == 1){
+        glColor3f(1, 0, 0);
+        glBegin(GL_TRIANGLES);
+            glVertex3d(randX-2,0,randZ);
+            glVertex3d(randX+2,0,randZ);
+            glVertex3d(randX,0,randZ+2);
+        glEnd();
+        glColor3f(1, 1, 0);
+        glBegin(GL_TRIANGLES);
+            glVertex3d(randX-2,0,randZ);
+            glVertex3d(randX,0,randZ+2);
+            glVertex3d(randX,2,randZ+1);
+        glEnd();
+        glColor3f(0, 1, 0);
+        glBegin(GL_TRIANGLES);
+            glVertex3d(randX+2,0,randZ);
+            glVertex3d(randX,0,randZ+2);
+            glVertex3d(randX,2,randZ+1);
+        glEnd();
+        /*
+        glColor3f(0, 0, 1);
+        glBegin(GL_TRIANGLES);
+            glVertex3d(randX+2,0,randZ+2);
+            glVertex3d(randX-2,0,randZ+2);
+            glVertex3d(randX,2,randZ+2);
+        glEnd();
+        */
+    }
 }
 
 bool envBlock::isExpired(float camZ){
