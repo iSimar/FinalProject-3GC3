@@ -78,7 +78,7 @@ void game::draw(){
         envBlock * currentEnvBlock = *i;
         glPushMatrix();
         glTranslatef(0, 0, currentEnvBlock->translateZ);
-        currentEnvBlock->draw(1);
+        currentEnvBlock->draw();
         glPopMatrix();
     }
     

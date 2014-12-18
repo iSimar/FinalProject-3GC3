@@ -30,6 +30,10 @@ public:
 
     float randX;
     float randZ;
+    float randomBlock;
+
+    //float leftDoor;
+    //float rightDoor;
     
     list<surface *> listOfSurfaces;
     
@@ -38,7 +42,7 @@ public:
     
     void addToTranslateZ(float i);
     
-    void draw(int t);
+    void draw();
     
     bool isExpired(float camZ);
     

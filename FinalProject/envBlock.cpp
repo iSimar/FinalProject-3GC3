@@ -1,4 +1,3 @@
-//
 //  envBlock.cpp
 //  FinalProject
 //
@@ -18,6 +17,7 @@
 #  include <GL/freeglut.h>
 #endif
 #include <iostream>
+#include <math.h>
 
 envBlock::envBlock(float l, float w, float h){
     length = l;
@@ -27,7 +27,12 @@ envBlock::envBlock(float l, float w, float h){
 
     randX = rand() % 20 - 10;
     randZ = rand() % 20 - 10;
-    
+
+    randomBlock = rand() % 100 + 1;
+
+    //leftDoor = 0.0;
+    //rightDoor = 0.0;
+
     rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     rgb[1] = rgb[0];
     rgb[2] = rgb[0];
@@ -60,7 +65,7 @@ void envBlock::addToTranslateZ(float i){
     translateZ+=i;
 }
 
-void envBlock::draw(int t){
+void envBlock::draw(){
     glPushMatrix();
     glColor3f(rgb[0], rgb[1], rgb[2]);
     glBegin(GL_QUADS);
@@ -81,7 +86,8 @@ void envBlock::draw(int t){
     glEnd();
     glPopMatrix();
 
-    if(t == 1){
+    //triangle block ; t = 1
+    if(randomBlock <= 20){
         glColor3f(1, 0, 0);
         glBegin(GL_TRIANGLES);
             glVertex3d(randX-2,0,randZ);
@@ -108,6 +114,39 @@ void envBlock::draw(int t){
             glVertex3d(randX,2,randZ+2);
         glEnd();
         */
+
+    //door block; t = 2
+    }else if(randomBlock <= 30){
+
+        glColor3f(0.5,0.5,0.5);
+        glBegin(GL_POLYGON);
+            glVertex3f(0,20,-10.5);
+            glVertex3f(0,0,-10.5);
+            glVertex3f(-10,0,-10.5);
+            glVertex3f(-10,20,-10.5);
+        glEnd();
+        glBegin(GL_POLYGON);
+            glVertex3f(0,20,-10.5);
+            glVertex3f(0,0,-10.5);
+            glVertex3f(10,0,-10.5);
+            glVertex3f(10,20,-10.5);
+        glEnd();
+
+        glColor3f(1,0,0);
+        glTranslatef(0, 0, -10);
+        int i, x, y;
+        double radius = 2.5;
+        double twicePi = 2.0 * 3.142;
+        x = 0, y = 15;
+        glBegin(GL_TRIANGLE_FAN); //BEGIN CIRCLE
+        glVertex2f(x, y); // center of circle
+        for (i = 0; i <= 20; i++)   {
+            glVertex2f (
+                (x + (radius * cos(i * twicePi / 20))), (y + (radius * sin(i * twicePi / 20)))
+                );
+        }
+        glEnd(); //END
+
     }
 }
 
