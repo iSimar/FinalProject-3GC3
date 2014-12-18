@@ -27,6 +27,13 @@ public:
     float rightWall[4][3];
     float leftWall[4][3];
     float ceiling[4][3];
+
+    //Variables for obstacle positioning
+    float obstacle1;
+    float obstacle2;
+    float size;
+    float size2;
+
     
     list<surface *> listOfSurfaces;
     

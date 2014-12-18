@@ -35,7 +35,8 @@ void game::updateMethod(){
     for(list<envBlock *>::iterator i = trainOfEnvBlocks.begin(); i != trainOfEnvBlocks.end(); ++i){
         envBlock * currentEnvBlock = *i;
         if(currentEnvBlock->isExpired(fpCamPos[2]))
-            trainOfEnvBlocks.erase(i);
+            //trainOfEnvBlocks.erase(i)
+            ;
         else{
             currentEnvBlock->addToTranslateZ(movingSpeed);
             currentEnvBlock->checkCollisions(listOfParticles);
@@ -49,7 +50,7 @@ void game::updateMethod(){
     for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
         particle * currentParticle = *i;
         if(currentParticle->isExpired(fpCamPos[2])){
-            listOfParticles.erase(i);
+            //listOfParticles.erase(i);
         }
         else{
             currentParticle->move(0.5, 100, 1, movingSpeed);

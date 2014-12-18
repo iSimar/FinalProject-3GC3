@@ -24,11 +24,17 @@ envBlock::envBlock(float l, float w, float h){
     height = h;
     width = w;
     translateZ = -100;
+
+    obstacle1 = rand() % 3 - rand() % 10;
+    obstacle2 = rand() % 5 + rand() % 10;
+    size = rand() % 4 + 2;
+    size2 = rand() % 4 + 2;
     
     rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    
+
+
     setFloorWallsCeilingPoints();
 
 }
@@ -57,6 +63,17 @@ void envBlock::draw(){
         glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);
     glEnd();
     glPopMatrix();
+
+//Obstacles
+    glEnable (GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1, 0, 0, 0.2);
+    glBegin(GL_QUADS);
+        glVertex3d(obstacle1,obstacle2,0);
+        glVertex3d(obstacle1 + size2,obstacle2,0);
+        glVertex3d(obstacle1,obstacle2 + size,0);
+        glVertex3d(obstacle1 + size2,obstacle2 + size,0);
+    glEnd();
 }
 
 bool envBlock::isExpired(float camZ){
@@ -123,6 +140,7 @@ void envBlock::setFloorWallsCeilingPoints(){
     ceiling[3][2] = -1*width;
     
 //    listOfSurfaces.push_back(new surface(ceiling));
+
 }
 
 void envBlock::checkCollisions(list<particle *> listOfParticles){

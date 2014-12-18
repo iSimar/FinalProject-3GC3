@@ -135,7 +135,7 @@ bool particle::isExpired(float camPosZ){
     }
     float * temp = getPosition();
     float realZPos =  translateZ + temp[2];
-    printf("%f\n", realZPos);
+    //printf("%f\n", realZPos);
     return realZPos > camPosZ;
 }
 

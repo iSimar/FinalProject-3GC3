@@ -28,6 +28,6 @@ surface::surface(float pointsArray[4][3]){
 
 bool surface::isCoplanar(float point[3]){
     float result = planeEquationX*point[0] + planeEquationY*(point[1]-1) + planeEquationZ*point[2];
-    printf("%f\n", result);
+    //printf("%f\n", result);
     return result < 0;
 }
