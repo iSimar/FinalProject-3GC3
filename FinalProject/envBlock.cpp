@@ -71,8 +71,8 @@ void envBlock::draw(){
     glBegin(GL_QUADS);
         glVertex3d(obstacle1,obstacle2,0);
         glVertex3d(obstacle1 + size2,obstacle2,0);
-        glVertex3d(obstacle1,obstacle2 + size,0);
         glVertex3d(obstacle1 + size2,obstacle2 + size,0);
+        glVertex3d(obstacle1,obstacle2 + size,0);
     glEnd();
 }
 
