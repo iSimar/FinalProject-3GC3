@@ -20,7 +20,7 @@ public:
     float screenSizeY = 600;
     
     float fpCamPos[3];
-    float movingSpeed = 1;
+    float movingSpeed = 0.9;
     
     float envBlockSize[3];
     list<envBlock *> trainOfEnvBlocks;

@@ -83,11 +83,12 @@ void game::screenClick(int x, int y){
      */
     float x_world = -1*(((screenSizeX/2)-x)/screenSizeX)*((envBlockSize[0])/2);
     float y_world = (((screenSizeY/2)-y)/screenSizeY)*((envBlockSize[1])/2)+fpCamPos[1];
+    
 
     listOfParticles.push_back(new particle(
                                            new point(fpCamPos[0], fpCamPos[1], fpCamPos[2]-10),
-                                           new point(x_world, y_world-2, fpCamPos[2]-30),
-                                           movingSpeed*0.06,
+                                           new point(x_world*1.5, y_world-2, fpCamPos[2]-30),
+                                           movingSpeed*0.04,
                                            1,
                                            300
                                            )

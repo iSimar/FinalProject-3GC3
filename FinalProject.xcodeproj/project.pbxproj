@@ -65,7 +65,6 @@
 				9A8A41141A34BAE10024B665 /* OpenGL.framework */,
 				9A8A41121A34BAD00024B665 /* GLUT.framework */,
 				9A8A410A1A34BABE0024B665 /* FinalProject */,
-				9A8A41091A34BABE0024B665 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,6 +74,7 @@
 				9A8A41081A34BABE0024B665 /* FinalProject */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		9A8A410A1A34BABE0024B665 /* FinalProject */ = {
@@ -83,14 +83,15 @@
 				9A9EEC111A3D114E003A19DA /* game.h */,
 				9A9EEC0F1A3D1145003A19DA /* game.cpp */,
 				9A8A410B1A34BABE0024B665 /* main.cpp */,
-				9A8A41161A34BC020024B665 /* envBlock.cpp */,
 				9A8A41171A34BC020024B665 /* envBlock.h */,
 				9AF001571A3E0FB000B4F460 /* point.cpp */,
 				9AF001581A3E0FB000B4F460 /* point.h */,
+				9A8A41161A34BC020024B665 /* envBlock.cpp */,
 				9AF0015A1A3E103A00B4F460 /* particle.cpp */,
 				9AF0015B1A3E103A00B4F460 /* particle.h */,
 				9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */,
 				9A3E4CFE1A3E663600FDC8A9 /* surface.h */,
+				9A8A41091A34BABE0024B665 /* Products */,
 			);
 			path = FinalProject;
 			sourceTree = "<group>";

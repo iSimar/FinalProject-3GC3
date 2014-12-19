@@ -23,6 +23,7 @@ envBlock::envBlock(float l, float w, float h){
     length = l;
     height = h;
     width = w;
+//    translateZ=0;
     translateZ = -100;
     
     rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -38,6 +39,7 @@ void envBlock::addToTranslateZ(float i){
 }
 
 void envBlock::draw(){
+//    printf("%f - %f\n", floor[3][2]+translateZ, floor[0][2]+translateZ);
     glPushMatrix();
     glColor3f(rgb[0], rgb[1], rgb[2]);
     glBegin(GL_QUADS);
@@ -92,7 +94,7 @@ void envBlock::setFloorWallsCeilingPoints(){
     rightWall[3][1] = 0;
     rightWall[3][2] = -1*width;
     
-//    listOfSurfaces.push_back(new surface(rightWall));
+    listOfSurfaces.push_back(new surface(rightWall));
     
     leftWall[0][0] = -1*length/2;
     leftWall[0][1] = 0;
@@ -107,7 +109,7 @@ void envBlock::setFloorWallsCeilingPoints(){
     leftWall[3][1] = 0;
     leftWall[3][2] = -1*width;
     
-//    listOfSurfaces.push_back(new surface(leftWall));
+    listOfSurfaces.push_back(new surface(leftWall));
     
     ceiling[0][0] = length/2;
     ceiling[0][1] = height;
@@ -122,19 +124,28 @@ void envBlock::setFloorWallsCeilingPoints(){
     ceiling[3][1] = height;
     ceiling[3][2] = -1*width;
     
-//    listOfSurfaces.push_back(new surface(ceiling));
+    listOfSurfaces.push_back(new surface(ceiling));
 }
 
 void envBlock::checkCollisions(list<particle *> listOfParticles){
     for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
         particle * currentParticle = *i;
-        for(list<surface *>::iterator j = listOfSurfaces.begin(); j != listOfSurfaces.end(); ++j){
-            surface * currentSurface = *j;
-            float * temp = currentParticle->getPosition();
-//            printf("temp: %f, %f, %f\n", temp[0], temp[1], temp[2]);
-            if(currentSurface->isCoplanar(temp)){
-                printf("gogogo");
-                currentParticle->invertDirection(1);
+        
+        if(translateZ-width<=currentParticle->position->z && currentParticle->position->z<=translateZ){
+//            printf("%f <= %f <= %f\n", translateZ-width, currentParticle->position->z, translateZ);
+            for(list<surface *>::iterator j = listOfSurfaces.begin(); j != listOfSurfaces.end(); ++j){
+                float * particlePos = currentParticle->getPosition();
+                surface * currentSurface = *j;
+                float * intersection = currentSurface->getIntersection(particlePos, currentParticle->getDirection());
+                if(intersection!=NULL){
+                    float dist = currentSurface->distance(particlePos, intersection);
+//                    printf("%f\n", dist);
+                    if(dist < 4)
+                        if(currentSurface->pointInSurface(intersection, translateZ)){
+                            currentParticle->reflectDirection(currentSurface->n);
+                        }
+                    
+                }
             }
         }
     }

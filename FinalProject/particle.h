@@ -27,6 +27,8 @@ public:
     float lifespan; //lifespan of a particle
     float translateZ = 0;
     
+    bool withTheTrain = 0;
+    
     //Different types of constructors
     particle(point * position, float size); //meant for trailing particle no direction - don't move
     particle(point * position, point * direction, float size, float lifespan);
@@ -39,6 +41,7 @@ public:
     
     //Accessor Methods for Particle
     float * getPosition(); // returns a pointer to float array with the position of the particle
+    float * getDirection();
     int * getRGBColor(); // returns a pointer to int array with the rgb color values of the particle
     int * getRotationAngles(); // returns a pointer int array with the rotation angles fo the particle
     float getSize(); // return a float size of the particle
@@ -72,6 +75,8 @@ public:
     
 
     void renderParticle();
+    
+    void reflectDirection(float normal[3]);
     
 };
 
