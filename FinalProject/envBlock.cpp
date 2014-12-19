@@ -19,6 +19,9 @@
 #endif
 #include <iostream>
 
+#include "PPM_Texture_Loader.h"
+GLuint texID[1];
+
 envBlock::envBlock(float l, float w, float h){
     length = l;
     height = h;
@@ -40,18 +43,23 @@ void envBlock::addToTranslateZ(float i){
 void envBlock::draw(){
     glPushMatrix();
     glColor3f(rgb[0], rgb[1], rgb[2]);
+    
+    glBindTexture(GL_TEXTURE_2D, texID[0]);
     glBegin(GL_QUADS);
         for(int i= 0; i<4; i++)
             glVertex3d(floor[i][0], floor[i][1], floor[i][2]);
     glEnd();
+    glBindTexture(GL_TEXTURE_2D, texID[0]);
     glBegin(GL_QUADS);
         for(int i= 0; i<4; i++)
             glVertex3d(rightWall[i][0], rightWall[i][1], rightWall[i][2]);
     glEnd();
+    glBindTexture(GL_TEXTURE_2D, texID[0]);
     glBegin(GL_QUADS);
     for(int i= 0; i<4; i++)
         glVertex3d(leftWall[i][0], leftWall[i][1], leftWall[i][2]);
     glEnd();
+    glBindTexture(GL_TEXTURE_2D, texID[0]);
     glBegin(GL_QUADS);
     for(int i= 0; i<4; i++)
         glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);

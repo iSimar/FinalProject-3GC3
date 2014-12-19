@@ -20,6 +20,8 @@
 
 #include "game.h"
 
+
+
 //mode on or off constants
 const int OFF = 0;
 const int ON = 1;
@@ -35,6 +37,7 @@ float lightpos3[] = {10, 0, -60, 1.0};
 float lightDir[] = {0, 0 ,1};
 float lightDif[] = {1, 1, 1, 1};
 float lightSpec[] = {1, 1, 1, 1 };
+
 
 game * mainGame = new game();
 

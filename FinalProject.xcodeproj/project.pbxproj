@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		798F65B11A43F66400D65E3A /* PPM_Texture_Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 798F65AF1A43F66400D65E3A /* PPM_Texture_Loader.cpp */; };
 		9A3E4CFF1A3E663600FDC8A9 /* surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */; };
 		9A8A410C1A34BABE0024B665 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A8A410B1A34BABE0024B665 /* main.cpp */; };
 		9A8A41131A34BAD00024B665 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A8A41121A34BAD00024B665 /* GLUT.framework */; };
@@ -30,6 +31,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		798F65AF1A43F66400D65E3A /* PPM_Texture_Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PPM_Texture_Loader.cpp; sourceTree = "<group>"; };
+		798F65B01A43F66400D65E3A /* PPM_Texture_Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPM_Texture_Loader.h; sourceTree = "<group>"; };
+		798F65B21A43F91C00D65E3A /* marble.ppm */ = {isa = PBXFileReference; lastKnownFileType = text; path = marble.ppm; sourceTree = "<group>"; };
 		9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = surface.cpp; sourceTree = "<group>"; };
 		9A3E4CFE1A3E663600FDC8A9 /* surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = surface.h; sourceTree = "<group>"; };
 		9A8A41081A34BABE0024B665 /* FinalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FinalProject; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +84,7 @@
 		9A8A410A1A34BABE0024B665 /* FinalProject */ = {
 			isa = PBXGroup;
 			children = (
+				798F65B21A43F91C00D65E3A /* marble.ppm */,
 				9A9EEC111A3D114E003A19DA /* game.h */,
 				9A9EEC0F1A3D1145003A19DA /* game.cpp */,
 				9A8A410B1A34BABE0024B665 /* main.cpp */,
@@ -91,6 +96,8 @@
 				9AF0015B1A3E103A00B4F460 /* particle.h */,
 				9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */,
 				9A3E4CFE1A3E663600FDC8A9 /* surface.h */,
+				798F65AF1A43F66400D65E3A /* PPM_Texture_Loader.cpp */,
+				798F65B01A43F66400D65E3A /* PPM_Texture_Loader.h */,
 			);
 			path = FinalProject;
 			sourceTree = "<group>";
@@ -157,6 +164,7 @@
 				9A8A41181A34BC020024B665 /* envBlock.cpp in Sources */,
 				9A9EEC101A3D1145003A19DA /* game.cpp in Sources */,
 				9A3E4CFF1A3E663600FDC8A9 /* surface.cpp in Sources */,
+				798F65B11A43F66400D65E3A /* PPM_Texture_Loader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,16 +248,18 @@
 		9A8A41101A34BABE0024B665 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
 		9A8A41111A34BABE0024B665 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
