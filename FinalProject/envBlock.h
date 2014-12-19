@@ -32,8 +32,8 @@ public:
     float randZ;
     float randomBlock;
 
-    //float leftDoor;
-    //float rightDoor;
+    float leftDoor;
+    float rightDoor;
     
     list<surface *> listOfSurfaces;
     
