@@ -15,6 +15,7 @@
 #  include <GL/gl.h>
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
+#  include <Windows.h>
 #endif
 #include <iostream>
 
@@ -25,27 +26,37 @@ const int OFF = 0;
 const int ON = 1;
 
 int firstPersonMode = ON;
+int gamestatus = 0;
 
 float camPos[] = {50, 50, 50};
 
-float lightpos[] = {-10, 20, -60, 1.0};
-float lightpos1[] = {0, 10, 20, 1.0};
-float lightpos2[] = {-10, 0, -60, 1.0};
-float lightpos3[] = {10, 0, -60, 1.0};
-float lightDir[] = {0, 0 ,1};
+//float lightpos1[] = {-10, 20, -60, 1.0};
+//float lightpos1[] = {0, 10, 20, 1.0};
+float lightpos[] = {0, -10, 53, 1.0};
+float lightpos1[] = {-130, -10, 79, 1.0};
+float lightpos2[] = {0, -10, 79, 1.0};
+float lightDir[] = {0, 1 ,-1};
+//float lightDir[] = {0,  ,0};
 float lightDif[] = {1, 1, 1, 1};
 float lightSpec[] = {1, 1, 1, 1 };
 
 game * mainGame = new game();
 
+void reshape(int w, int h)
+{
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void display(){
     //setup of material values for light
     float m_amb[] = {0.23, 0.22, 0.23, 1.0};
-    float m_dif[] = {0.2, 0.2, 0.2, 1.0};
-    float m_spec[] = {0.10, 0.1, 0.1, 1.0};
-    float shiny = 35;
-    
-    //    enable material
+    float m_dif[] = {0.9, 0.9, 0.9, 1.0};
+    float m_spec[] = {0.1, 0.1, 0.1, 1.0};
+    float shiny = 1;
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_dif);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec);
@@ -56,13 +67,56 @@ void display(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    if(firstPersonMode==OFF)
+    if(firstPersonMode==OFF && gamestatus==1){
         gluLookAt(camPos[0], camPos[1], camPos[2], 0,10,0, 0,1,0);
-    else
+        mainGame->draw();
+    }else if(gamestatus==1){
         mainGame->setFPLook();
-    
-    mainGame->draw();
-    
+        mainGame->draw();
+    }else if(gamestatus==0){
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, 200, 0, 200);
+
+        glColor3f(1, 0, 0);
+
+        glRasterPos2i(70, 170);
+        string title = "WALL BLASTER";
+        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
+        for (string::iterator i = title.begin(); i != title.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font1, c);
+        }
+        glRasterPos2i(80, 80);
+        string start = "(S) START";
+        void * font2 = GLUT_BITMAP_9_BY_15;
+        for (string::iterator i = start.begin(); i != start.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        glRasterPos2i(80, 60);
+        string quit = "(Q) QUIT";
+        for (string::iterator i = quit.begin(); i != quit.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        glFlush();
+    }else if(gamestatus == 2){
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, 200, 0, 200);
+
+        glColor3f(1, 0, 0);
+
+        glRasterPos2i(80, 100);
+        string pause = "PAUSED";
+        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
+        for (string::iterator i = pause.begin(); i != pause.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font1, c);
+        }
+    }
+
     glutSwapBuffers();
     
 }
@@ -139,12 +193,54 @@ void keyboard(unsigned char key, int x, int y){
         case 'm':
             camPos[1] -= 2;
             break;
+        case 'j':
+        case 'J':
+            lightpos1[1] -= 1;
+//            light_pos2[1] -= 10;
+            break;
+            // if 'u' -> increase light 1 brightness
+        case 'u':
+        case 'U':
+            lightpos1[1] += 1;
+//            light_pos2[1] += 10;
+            break;
+        case 'h':
+        case 'H':
+            lightpos1[2] += 1;
+//            light_pos2[2] += 10;
+            break;
+        case 'K':
+        case 'k':
+            lightpos1[2] -= 1;
+//            light_pos2[2] -= 10;
+            break;
+        case 'S':
+        case 's':
+            if(gamestatus != 1){
+                gamestatus = 1;
+            }
+            break;
+        case 'P':
+        case 'p':
+            if(gamestatus != 2){
+                gamestatus = 2;
+            }else{
+                gamestatus = 1;
+            }
+            break;
     }
+    printf("%f %f %f\n", lightpos1[0], lightpos1[1], lightpos1[2]);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
+//    glLightfv(GL_LIGHT1, GL_POSITION, light_pos2);
+    glPopMatrix();
+    
     glutPostRedisplay();
 }
 
 void init(void){
-    glClearColor(0, 0, 0, 0);
     glColor3f(1, 1, 1);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -153,15 +249,22 @@ void init(void){
     glEnable(GL_LIGHTING);
     
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
+//    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
     
     glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
+//    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDif);
     glLightfv(GL_LIGHT1, GL_SPECULAR, lightSpec);
     
+    glLightfv(GL_LIGHT2, GL_POSITION, lightpos2);
+    //    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, lightDif);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, lightSpec);
+    
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
+//    glEnable(GL_LIGHT2);
+
     
     gluPerspective(45, 1, 1, 100);
 }

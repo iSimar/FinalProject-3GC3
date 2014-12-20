@@ -18,6 +18,7 @@
 #  include <GL/gl.h>
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
+#  include <Windows.h>
 #endif
 #include <iostream>
 
@@ -90,6 +91,14 @@ float * particle::getPosition(){
     return positionArr;
 }
 
+float * particle::getDirection(){
+    float * directionArr = new float[3];
+    directionArr[0] = direction->x;
+    directionArr[1] = direction->y;
+    directionArr[2] = direction->z;
+    return directionArr;
+}
+
 int * particle::getRGBColor(){
     return rgb_color;
 }
@@ -119,7 +128,10 @@ void particle::move(float gravity, float floorSize, int friction, float envMovin
     rotation[1]+=1;
     rotation[2]+=1;
     
-    translateZ+= envMovingSpeed;
+    if(withTheTrain){
+        translateZ+= envMovingSpeed;
+        speed*=1.003;
+    }
     
 }
 
@@ -130,12 +142,14 @@ bool particle::isExpired(){
 }
 
 bool particle::isExpired(float camPosZ){
+    if(position->y < -2)
+        return 1;
     if(age>lifespan){
         return 1;
     }
     float * temp = getPosition();
     float realZPos =  translateZ + temp[2];
-    printf("%f\n", realZPos);
+//    printf("%f\n", realZPos);
     return realZPos > camPosZ;
 }
 
@@ -151,6 +165,7 @@ bool particle::isTouchingFloor(float floorSize){
 }
 
 void particle::invertDirection(int friction){
+    withTheTrain = 1;
     direction->y*=-1;
     if(friction==1){
         speed*=0.50;
@@ -171,4 +186,14 @@ void particle::renderParticle(){
     glRotatef(pRotationAngles[2], 0, 0, 1); //rotation angle in z axis
     glutSolidSphere(pSize, 16, 16); //draw a solid sphere with radius as the particle size
     glPopMatrix(); // pop the matrix
+}
+
+void particle::reflectDirection(float normal[3]){
+    float * dir = getDirection();
+    float dot = normal[0]*dir[0] + normal[1]*dir[1] + normal[2]*dir[2];
+    direction->x = -2*dot*normal[0] + direction->x;
+    direction->y = -2*dot*normal[1] + direction->y;
+    direction->z = -2*dot*normal[2] + direction->z;
+    speed*=0.50;
+    withTheTrain = 1;
 }
