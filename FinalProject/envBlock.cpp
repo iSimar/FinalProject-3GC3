@@ -35,7 +35,18 @@ envBlock::envBlock(float l, float w, float h){
     rgb[2] = 0.631;
     setFloorWallsCeilingPoints();
     
-    listOfTriangles.push_back(new triangle(length, width));
+    if(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)<0.2)
+        listOfTriangles.push_back(new triangle(length, width));
+    
+    if(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)<0.3)
+        listOfGlasses.push_back(new glass());
+    
+//    for(list<glass *>::iterator i = listOfGlasses.begin(); i != listOfGlasses.end(); ++i){
+//        glass * currentGlass = *i;
+//        listOfSurfaces.merge(currentGlass->listOfSurfaces);
+////        printf("adds");
+//    }
+    
 
 }
 
@@ -46,12 +57,13 @@ void envBlock::addToTranslateZ(float i){
 void envBlock::draw(){
 //    printf("%f - %f\n", floor[3][2]+translateZ, floor[0][2]+translateZ);
     glPushMatrix();
-    glColor3f(rgb[0], rgb[1], rgb[2]);
+    glColor3f(rgb[0]*0.5, rgb[1]*0.5, rgb[2]*0.5);
     glBegin(GL_QUADS);
         for(int i= 0; i<4; i++)
             glVertex3d(floor[i][0], floor[i][1], floor[i][2]);
     glNormal3fv(crossProduct(floor[0], floor[1]));
     glEnd();
+    glColor3f(rgb[0]*0.8, rgb[1]*0.3, rgb[2]*0.2);
     glBegin(GL_QUADS);
         for(int i= 0; i<4; i++)
             glVertex3d(rightWall[i][0], rightWall[i][1], rightWall[i][2]);
@@ -62,6 +74,7 @@ void envBlock::draw(){
         glVertex3d(leftWall[i][0], leftWall[i][1], leftWall[i][2]);
     glNormal3fv(crossProduct(leftWall[0], leftWall[1]));
     glEnd();
+    glColor3f(rgb[0], rgb[1], rgb[2]);
     glBegin(GL_QUADS);
     for(int i= 0; i<4; i++)
         glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);
@@ -72,6 +85,11 @@ void envBlock::draw(){
     for(list<triangle *>::iterator i = listOfTriangles.begin(); i != listOfTriangles.end(); ++i){
         triangle * currentTriangle = *i;
         currentTriangle->draw();
+    }
+    
+    for(list<glass *>::iterator i = listOfGlasses.begin(); i != listOfGlasses.end(); ++i){
+        glass * currentGlass = *i;
+        currentGlass->draw();
     }
     
 }
@@ -109,7 +127,7 @@ void envBlock::setFloorWallsCeilingPoints(){
     rightWall[3][1] = 0;
     rightWall[3][2] = -1*width;
     
-    listOfSurfaces.push_back(new surface(rightWall));
+//    listOfSurfaces.push_back(new surface(rightWall));
     
     leftWall[0][0] = -1*length/2;
     leftWall[0][1] = 0;
@@ -166,10 +184,10 @@ void envBlock::checkCollisions(list<particle *> listOfParticles){
             
             
             
-            for(list<triangle *>::iterator i = listOfTriangles.begin(); i != listOfTriangles.end(); ++i){
-                triangle * currentTriangle = *i;
-                for(list<surface *>::iterator j = currentTriangle->listOfSurfaces.begin(); j != currentTriangle->listOfSurfaces.end(); ++j){
-                        surface * currentSurface = *j;
+            for(list<triangle *>::iterator u = listOfTriangles.begin(); u != listOfTriangles.end(); ++u){
+                triangle * currentTriangle = *u;
+                for(list<surface *>::iterator h = currentTriangle->listOfSurfaces.begin(); h != currentTriangle->listOfSurfaces.end(); ++h){
+                        surface * currentSurface = *h;
                         float * particlePos_1 = currentParticle->getPosition();
                         float * intersection_1 = currentSurface->getIntersection(particlePos_1, currentParticle->getDirection(), currentTriangle->getZPosition(translateZ));
                         if(intersection_1!=NULL){
@@ -187,9 +205,36 @@ void envBlock::checkCollisions(list<particle *> listOfParticles){
                 
             }
             
+            for(list<glass *>::iterator b = listOfGlasses.begin(); b != listOfGlasses.end(); ++b){
+                glass * currentGlass = *b;
+                if(!currentGlass->mustDelete){
+                float * particlePos_2 = currentParticle->getPosition();
+                float glassZ = currentGlass->getZPosition(translateZ);
+                if(glassZ-particlePos_2[2] >  -2){
+                    if(currentGlass->vectors[1][0]<=particlePos_2[0] && particlePos_2[0]<=currentGlass->vectors[0][0]){                        if(currentGlass->vectors[0][1]<=particlePos_2[1] && particlePos_2[1]<=currentGlass->vectors[3][1]){
+                            float * n = new float[3];
+                            n[0] = 0; n[1] = 0; n[2] = 1;
+                            currentParticle->reflectDirection(n);
+                            currentGlass->mustDelete = 1;
+                            listOfParticles.erase(i);
+                        }
+                    }
+                    
+                }
+                }
+                
+            }
             
             
             
+            
+        }
+    }
+    
+    for(list<glass *>::iterator b = listOfGlasses.begin(); b != listOfGlasses.end(); ++b){
+        glass * currentGlass = *b;
+        if(currentGlass->mustDelete){
+            listOfGlasses.erase(b);
         }
     }
 }

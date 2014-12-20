@@ -11,6 +11,7 @@
 #include "particle.h"
 #include "surface.h"
 #include "triangle.h"
+#include "glass.h"
 
 using namespace std;
 
@@ -32,6 +33,7 @@ public:
     list<surface *> listOfSurfaces;
     
     list<triangle *> listOfTriangles;
+    list<glass *> listOfGlasses;
     
     envBlock(float l, float w, float h);
     

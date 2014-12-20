@@ -38,6 +38,12 @@ float lightDir[] = {0, 1 ,-1};
 float lightDif[] = {1, 1, 1, 1};
 float lightSpec[] = {1, 1, 1, 1 };
 
+
+GLuint filter;                      // Which Filter To Use
+GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };   // Storage For Three Types Of Fog
+GLuint fogfilter= 2;                    // Which Fog To Use
+GLfloat fogColor[4]= {0.5f, 0.5f, 0.5f, 1.0f};      // Fog Color
+
 game * mainGame = new game();
 
 void display(){
@@ -53,6 +59,8 @@ void display(){
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
     glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
     
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -66,6 +74,57 @@ void display(){
     
     glutSwapBuffers();
     
+}
+
+unsigned char* loadPPM(const char* filename, int& width, int& height){
+    const int BUFSIZE = 128;
+    FILE* fp;
+    unsigned int read;
+    unsigned char* rawData;
+    char buf[3][BUFSIZE];
+    char* retval_fgets;
+    size_t retval_sscanf;
+    
+    if ( (fp=fopen(filename, "rb")) == NULL)
+    {
+        std::cerr << "error reading ppm file, could not locate " << filename << std::endl;
+        width = 0;
+        height = 0;
+        return NULL;
+    }
+    
+    // Read magic number:
+    retval_fgets = fgets(buf[0], BUFSIZE, fp);
+    
+    // Read width and height:
+    do
+    {
+        retval_fgets=fgets(buf[0], BUFSIZE, fp);
+    } while (buf[0][0] == '#');
+    retval_sscanf=sscanf(buf[0], "%s %s", buf[1], buf[2]);
+    width  = atoi(buf[1]);
+    height = atoi(buf[2]);
+    
+    // Read maxval:
+    do
+    {
+        retval_fgets=fgets(buf[0], BUFSIZE, fp);
+    } while (buf[0][0] == '#');
+    
+    // Read image data:
+    rawData = new unsigned char[width * height * 3];
+    read = fread(rawData, width * height * 3, 1, fp);
+    fclose(fp);
+    if (read != 1)
+    {
+        std::cerr << "error parsing ppm file, incomplete data" << std::endl;
+        delete[] rawData;
+        width = 0;
+        height = 0;
+        return NULL;
+    }
+    
+    return rawData;
 }
 
 void updateMethod(int value){
@@ -172,9 +231,22 @@ void keyboard(unsigned char key, int x, int y){
     
     glutPostRedisplay();
 }
+//
+void initFog(){
+    glClearColor(0.5f,0.5f,0.5f,1.0f);          // We'll Clear To The Color Of The Fog ( Modified )
+    glFogi(GL_FOG_MODE, fogMode[fogfilter]);        // Fog Mode
+    glFogfv(GL_FOG_COLOR, fogColor);            // Set Fog Color
+    glFogf(GL_FOG_DENSITY, 0.2f);              // How Dense Will The Fog Be
+    glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
+    glFogf(GL_FOG_START, 0.0f);             // Fog Start Depth
+    glFogf(GL_FOG_END, 100.0f);               // Fog End Depth
+    glEnable(GL_FOG);                   // Enables GL_FOG
+}
 
 void init(void){
-    glClearColor(0, 0, 0, 0);
+    initFog();
+    
+//    glClearColor(1, 1, 1, 0);
     glColor3f(1, 1, 1);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

@@ -88,10 +88,10 @@ void surface::updatePoints(float newZ){
     
     
 //    
-////    printf("p1: %f %f %f\n", points[0][0], points[0][1], points[0][2]);
-////    printf("p2: %f %f %f\n", points[1][0], points[1][1], points[1][2]);
-////    printf("p3: %f %f %f\n", points[2][0], points[2][1], points[2][2]);
-////    printf("p4: %f %f %f\n", points[3][0], points[3][1], points[3][2]);
+//    printf("p1: %f %f %f\n", points[0][0], points[0][1], points[0][2]);
+//    printf("p2: %f %f %f\n", points[1][0], points[1][1], points[1][2]);
+//    printf("p3: %f %f %f\n", points[2][0], points[2][1], points[2][2]);
+//    printf("p4: %f %f %f\n", points[3][0], points[3][1], points[3][2]);
     float * v1 = new float[3];
     v1[0] = points[0][0]-points[1][0];
     v1[1] = points[0][1]-points[1][1];

@@ -55,6 +55,7 @@ void game::updateMethod(){
             currentParticle->move(0.5, 100, 1, movingSpeed);
         }
     }
+    glassCameraCollision();
 }
 
 void game::draw(){
@@ -93,4 +94,21 @@ void game::screenClick(int x, int y){
                                            300
                                            )
                               );
+}
+
+void game::glassCameraCollision(){
+    envBlock * frontEnvBlock = trainOfEnvBlocks.front();
+    for(list<glass *>::iterator i = frontEnvBlock->listOfGlasses.begin(); i != frontEnvBlock->listOfGlasses.end(); ++i){
+        glass * currentGlass = *i;
+        float glassZ = currentGlass->getZPosition(frontEnvBlock->translateZ);
+        if(glassZ>0){
+            if(currentGlass->vectors[1][0]<=0 && 0<=currentGlass->vectors[0][0]){
+                if(currentGlass->vectors[0][1]<=10 && 10<=currentGlass->vectors[3][1]){
+                    printf("CRASH!!!!!");
+            }
+        }
+            
+    }
+        
+}
 }

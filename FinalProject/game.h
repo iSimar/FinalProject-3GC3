@@ -26,6 +26,8 @@ public:
     list<envBlock *> trainOfEnvBlocks;
     list<particle *> listOfParticles;
     
+    void glassCameraCollision();
+    
     game();
     
     void updateMethod();
