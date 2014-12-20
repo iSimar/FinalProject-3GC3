@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A3892701A45814D002046B0 /* triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A38926F1A45814D002046B0 /* triangle.cpp */; };
 		9A3E4CFF1A3E663600FDC8A9 /* surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */; };
 		9A8A410C1A34BABE0024B665 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A8A410B1A34BABE0024B665 /* main.cpp */; };
 		9A8A41131A34BAD00024B665 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A8A41121A34BAD00024B665 /* GLUT.framework */; };
@@ -30,6 +31,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A38926F1A45814D002046B0 /* triangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = triangle.cpp; sourceTree = "<group>"; };
+		9A3892711A458156002046B0 /* triangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triangle.h; sourceTree = "<group>"; };
 		9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = surface.cpp; sourceTree = "<group>"; };
 		9A3E4CFE1A3E663600FDC8A9 /* surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = surface.h; sourceTree = "<group>"; };
 		9A8A41081A34BABE0024B665 /* FinalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FinalProject; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +83,8 @@
 		9A8A410A1A34BABE0024B665 /* FinalProject */ = {
 			isa = PBXGroup;
 			children = (
+				9A3892711A458156002046B0 /* triangle.h */,
+				9A38926F1A45814D002046B0 /* triangle.cpp */,
 				9A9EEC111A3D114E003A19DA /* game.h */,
 				9A9EEC0F1A3D1145003A19DA /* game.cpp */,
 				9A8A410B1A34BABE0024B665 /* main.cpp */,
@@ -153,6 +158,7 @@
 			files = (
 				9AF001591A3E0FB000B4F460 /* point.cpp in Sources */,
 				9A8A410C1A34BABE0024B665 /* main.cpp in Sources */,
+				9A3892701A45814D002046B0 /* triangle.cpp in Sources */,
 				9AF0015C1A3E103A00B4F460 /* particle.cpp in Sources */,
 				9A8A41181A34BC020024B665 /* envBlock.cpp in Sources */,
 				9A9EEC101A3D1145003A19DA /* game.cpp in Sources */,

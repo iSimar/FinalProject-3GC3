@@ -40,7 +40,7 @@ float lightDir[] = {0, 1 ,-1};
 float lightDif[] = {1, 1, 1, 1};
 float lightSpec[] = {1, 1, 1, 1 };
 
-game * mainGame = new game();
+game * mainGame = NULL;
 
 void reshape(int w, int h)
 {
@@ -64,13 +64,17 @@ void display(){
     glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    
     
     if(firstPersonMode==OFF && gamestatus==1){
         gluLookAt(camPos[0], camPos[1], camPos[2], 0,10,0, 0,1,0);
         mainGame->draw();
     }else if(gamestatus==1){
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(450, 1, 1, 1000);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
         mainGame->setFPLook();
         mainGame->draw();
     }else if(gamestatus==0){
@@ -100,7 +104,6 @@ void display(){
             char c = *i;
             glutBitmapCharacter(font2, c);
         }
-        glFlush();
     }else if(gamestatus == 2){
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -115,15 +118,19 @@ void display(){
             char c = *i;
             glutBitmapCharacter(font1, c);
         }
+        glFlush();
+        
     }
-
+    glFlush();
     glutSwapBuffers();
     
 }
 
 void updateMethod(int value){
     mainGame->updateMethod();
-    glutTimerFunc(16, updateMethod, 0);
+    if(gamestatus==1){
+        glutTimerFunc(16, updateMethod, 0);
+    }
     glutPostRedisplay();
 }
 
@@ -218,6 +225,8 @@ void keyboard(unsigned char key, int x, int y){
         case 's':
             if(gamestatus != 1){
                 gamestatus = 1;
+                mainGame = new game();
+                glutTimerFunc(16, updateMethod, 0);
             }
             break;
         case 'P':
@@ -226,6 +235,7 @@ void keyboard(unsigned char key, int x, int y){
                 gamestatus = 2;
             }else{
                 gamestatus = 1;
+                glutTimerFunc(16, updateMethod, 0);
             }
             break;
     }
@@ -281,8 +291,6 @@ int main(int argc, char ** argv){
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(special);
     glutMouseFunc(mouse);
-    
-    glutTimerFunc(16, updateMethod, 0);
     
     glEnable(GL_DEPTH_TEST);
     init();
