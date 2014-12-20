@@ -94,3 +94,49 @@ void game::screenClick(int x, int y){
                                            )
                               );
 }
+
+/* 
+ Code birunthaa has added
+ drawtext conversion, from course website 
+*/
+void game::drawStrokeText(char* text, int x, int y)
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0, 600, 0, 600);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+    
+	glTranslatef(x, y, 0);
+	glScalef(0.20, 0.20, 0.20);
+	
+	char* c;  //character iterator (ptr)
+	for(c = text; *c != '\0'; c++) //stop when we hit null character
+	{
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, *c); //print one char
+	}
+}
+/*
+ Code birunthaa has added
+ set score when ball hits the walls
+ */
+string game:: setScore(){
+    int score =0;
+    //score+= 100;
+    string finalScore = to_string(score);
+    return finalScore;
+}
+/*
+ Code birunthaa has added
+ balls left counter 
+ */
+string game:: setBallsLeft(){
+    int ballsLeft=8;
+    //ballsLeft-=1;
+    
+    string numBallsLeft = to_string(ballsLeft);
+    return numBallsLeft;
+}
+
+
+

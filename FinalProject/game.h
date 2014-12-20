@@ -33,4 +33,13 @@ public:
     void setFPLook();
     
     void screenClick(int x, int y);
+   
+    /*
+     Code birunthaa has added
+    */
+    void drawStrokeText(char* text, int x, int y);
+    string setScore();
+    string setBallsLeft();
+    
+
 };
