@@ -42,14 +42,6 @@ float lightSpec[] = {1, 1, 1, 1 };
 
 game * mainGame = new game();
 
-void reshape(int w, int h)
-{
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-}
-
 void display(){
     //setup of material values for light
     float m_amb[] = {0.23, 0.22, 0.23, 1.0};
@@ -64,10 +56,9 @@ void display(){
     glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
     
-    if(firstPersonMode==OFF && gamestatus==1){
+    
+    if(firstPersonMode==OFF && gamestatus == 1){
         gluLookAt(camPos[0], camPos[1], camPos[2], 0,10,0, 0,1,0);
         mainGame->draw();
     }else if(gamestatus==1){
@@ -78,36 +69,77 @@ void display(){
         glLoadIdentity();
         gluOrtho2D(0, 200, 0, 200);
 
-        glColor3f(1, 0, 0);
+        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
+        void * font2 = GLUT_BITMAP_9_BY_15;
+        void * font3 = GLUT_BITMAP_TIMES_ROMAN_10;
 
+        //Title
+        glColor3f(1, 0, 0);
         glRasterPos2i(70, 170);
         string title = "WALL BLASTER";
-        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
         for (string::iterator i = title.begin(); i != title.end(); ++i){
             char c = *i;
             glutBitmapCharacter(font1, c);
         }
+        //Instruction line 1
+        glColor3f(1, 1, 1);
+        glRasterPos2i(15, 130);
+        string desc1 = "CLICK TO FIRE BALLS. BREAK THE GLASS PLANES THAT COME AT YOU. IF YOU GET HIT BY ONE, YOU LOSE.";
+        for (string::iterator i = desc1.begin(); i != desc1.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+        //Instruction line 2
+        glRasterPos2i(15, 120);
+        string desc2 = "HITTING ONE OF THE MANY PYRAMIDS ON THE FLOOR WILL ADD TWO BALLS TO YOUR TOTAL BALL AMMO";
+        for (string::iterator i = desc2.begin(); i != desc2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+        //S
         glRasterPos2i(80, 80);
-        string start = "(S) START";
-        void * font2 = GLUT_BITMAP_9_BY_15;
+        string start = "(S)";
         for (string::iterator i = start.begin(); i != start.end(); ++i){
             char c = *i;
             glutBitmapCharacter(font2, c);
         }
+        //Q
         glRasterPos2i(80, 60);
-        string quit = "(Q) QUIT";
+        string quit = "(Q)";
         for (string::iterator i = quit.begin(); i != quit.end(); ++i){
             char c = *i;
             glutBitmapCharacter(font2, c);
         }
-        glFlush();
+        //Start
+        glColor3f(0, 0.5, 1);
+        glRasterPos2i(90, 80);
+        string start2 = "Start";
+        for (string::iterator i = start2.begin(); i != start2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        //Quit
+        glRasterPos2i(90, 60);
+        string quit2 = "Quit";
+        for (string::iterator i = quit2.begin(); i != quit2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        //Name
+        glColor3f(1, 1, 1);
+        glRasterPos2i(15, 10);
+        string name = "BY: Simarpreet Singh (1216728), Birunthaa Umamahesan (1203142), Joseph Nguyen (1229287), Curran Tam (1231038)";
+        for (string::iterator i = name.begin(); i != name.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
     }else if(gamestatus == 2){
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         gluOrtho2D(0, 200, 0, 200);
 
-        glColor3f(1, 0, 0);
-
+        //Pause Menu
+        glColor3f(1, 1, 1);
         glRasterPos2i(80, 100);
         string pause = "PAUSED";
         void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
@@ -115,14 +147,44 @@ void display(){
             char c = *i;
             glutBitmapCharacter(font1, c);
         }
+        //additional description
+        glRasterPos2i(60, 70);
+        void * font3 = GLUT_BITMAP_TIMES_ROMAN_10;
+        string desc2 = "PRESS (S) TO RESTART THE GAME OR (Q) TO QUIT";
+        for (string::iterator i = desc2.begin(); i != desc2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+    }else if(gamestatus == 3){
+        //GAMEOVER
+        glColor3f(1, 0, 0);
+        glRasterPos2i(80, 100);
+        string gameover = "GAME OVER";
+        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
+        for (string::iterator i = gameover.begin(); i != gameover.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font1, c);
+        }
+        //additional description
+        glColor3f(1, 1, 1);
+        glRasterPos2i(60, 70);
+        void * font3 = GLUT_BITMAP_TIMES_ROMAN_10;
+        string desc2 = "PRESS (S) TO RESTART THE GAME OR (Q) TO QUIT";
+        for (string::iterator i = desc2.begin(); i != desc2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
     }
-
+    glFlush();
     glutSwapBuffers();
     
 }
 
 void updateMethod(int value){
-    mainGame->updateMethod();
+    if(gamestatus==2){
+    }else{
+        mainGame->updateMethod();
+    }
     glutTimerFunc(16, updateMethod, 0);
     glutPostRedisplay();
 }
@@ -283,7 +345,7 @@ int main(int argc, char ** argv){
     glutMouseFunc(mouse);
     
     glutTimerFunc(16, updateMethod, 0);
-    
+        
     glEnable(GL_DEPTH_TEST);
     init();
     glutMainLoop();
