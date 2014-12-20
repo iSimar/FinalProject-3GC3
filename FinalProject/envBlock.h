@@ -10,6 +10,7 @@
 #include <list>
 #include "particle.h"
 #include "surface.h"
+#include "triangle.h"
 
 using namespace std;
 
@@ -27,18 +28,12 @@ public:
     float rightWall[4][3];
     float leftWall[4][3];
     float ceiling[4][3];
-
-    float randX;
-    float randZ;
-    float randomBlock;
-
-    float leftDoor;
-    float rightDoor;
     
     list<surface *> listOfSurfaces;
     
+    list<triangle *> listOfTriangles;
+    
     envBlock(float l, float w, float h);
-    //envBlock(float l, float w, float h, int t);
     
     void addToTranslateZ(float i);
     
@@ -51,5 +46,7 @@ public:
     list<surface *> getSurfaces();
     
     void checkCollisions(list<particle *> listOfParticles);
+    
+    float * crossProduct(float v1[3], float v2[3]);
     
 };

@@ -20,7 +20,7 @@ public:
     float screenSizeY = 600;
     
     float fpCamPos[3];
-    float movingSpeed = 1;
+    float movingSpeed = 0.7;
     
     float envBlockSize[3];
     list<envBlock *> trainOfEnvBlocks;
@@ -31,9 +31,6 @@ public:
     void updateMethod();
     void draw();
     void setFPLook();
-
-    void speedup();
-    void speeddown();
     
     void screenClick(int x, int y);
 };

@@ -1,3 +1,4 @@
+//
 //  envBlock.cpp
 //  FinalProject
 //
@@ -15,148 +16,75 @@
 #  include <GL/gl.h>
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
+#  include <Windows.h>
 #endif
 #include <iostream>
-#include <math.h>
 
 envBlock::envBlock(float l, float w, float h){
     length = l;
     height = h;
     width = w;
+//    translateZ=0;
     translateZ = -100;
-
-    randX = rand() % 20 - 10;
-    randZ = rand() % 20 - 10;
-
-    randomBlock = rand() % 100 + 1;
-
-    leftDoor = 0;
-    rightDoor = 0;
-
-    rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    rgb[1] = rgb[0];
-    rgb[2] = rgb[0];
-    //rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    //rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     
-    setFloorWallsCeilingPoints();
-
-}
-
-/*
-envBlock::envBlock(float l, float w, float h, int t){
-    length = 1;
-    height = h;
-    width = w; 
-    translateZ = -100;
-
-    TYPE = t;
-
-    rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    rgb[1] = rgb[0];
-    rgb[2] = rgb[0];
+//    rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+//    rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+//    rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    
+    rgb[0] = 0.122;
+    rgb[1] = 0.745;
+    rgb[2] = 0.631;
 
     setFloorWallsCeilingPoints();
+    
+    listOfTriangles.push_back(new triangle(length, width));
 
 }
-*/
 
 void envBlock::addToTranslateZ(float i){
     translateZ+=i;
 }
 
 void envBlock::draw(){
-    int x, y = 0;
+//    printf("%f - %f\n", floor[3][2]+translateZ, floor[0][2]+translateZ);
     glPushMatrix();
     glColor3f(rgb[0], rgb[1], rgb[2]);
     glBegin(GL_QUADS);
         for(int i= 0; i<4; i++)
             glVertex3d(floor[i][0], floor[i][1], floor[i][2]);
+    glNormal3fv(crossProduct(floor[0], floor[1]));
     glEnd();
     glBegin(GL_QUADS);
-        for(int i= 0; i<4; i++)
-            glVertex3d(rightWall[i][0], rightWall[i][1], rightWall[i][2]);
+        //for(int i= 0; i<4; i++)
+        glTexCoord2f(0, 0); glVertex3d(rightWall[0][0], rightWall[0][1], rightWall[0][2]);
+        glTexCoord2f(0, 1); glVertex3d(rightWall[1][0], rightWall[1][1], rightWall[1][2]);
+        glTexCoord2f(1, 1); glVertex3d(rightWall[2][0], rightWall[2][1], rightWall[2][2]);
+        glTexCoord2f(1, 0); glVertex3d(rightWall[3][0], rightWall[3][1], rightWall[3][2]);
+    glNormal3fv(crossProduct(rightWall[0], rightWall[1]));
     glEnd();
     glBegin(GL_QUADS);
-    for(int i= 0; i<4; i++)
-        glVertex3d(leftWall[i][0], leftWall[i][1], leftWall[i][2]);
+    //for(int i= 0; i<4; i++)
+        glTexCoord2f(0, 0); glVertex3d(leftWall[0][0], leftWall[0][1], leftWall[0][2]);
+        glTexCoord2f(0, 1); glVertex3d(leftWall[1][0], leftWall[1][1], leftWall[1][2]);
+        glTexCoord2f(1, 1); glVertex3d(leftWall[2][0], leftWall[2][1], leftWall[2][2]);
+        glTexCoord2f(1, 0); glVertex3d(leftWall[3][0], leftWall[3][1], leftWall[3][2]);
+    glNormal3fv(crossProduct(leftWall[0], leftWall[1]));
     glEnd();
     glBegin(GL_QUADS);
-    for(int i= 0; i<4; i++)
-        glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);
+    //for(int i= 0; i<4; i++)
+        glTexCoord2f(0, 0); glVertex3d(ceiling[0][0], ceiling[0][1], ceiling[0][2]);
+        glTexCoord2f(0, 1); glVertex3d(ceiling[1][0], ceiling[1][1], ceiling[1][2]);
+        glTexCoord2f(1, 1); glVertex3d(ceiling[2][0], ceiling[2][1], ceiling[2][2]);
+        glTexCoord2f(1, 0); glVertex3d(ceiling[3][0], ceiling[3][1], ceiling[3][2]);
+    glNormal3fv(crossProduct(ceiling[0], ceiling[1]));
     glEnd();
     glPopMatrix();
-
-    //triangle block ; t = 1
-    if(randomBlock <= 20){
-        glColor3f(1, 0, 0);
-        glBegin(GL_TRIANGLES);
-            glVertex3d(randX-2,0,randZ);
-            glVertex3d(randX+2,0,randZ);
-            glVertex3d(randX,0,randZ+2);
-        glEnd();
-        glColor3f(1, 1, 0);
-        glBegin(GL_TRIANGLES);
-            glVertex3d(randX-2,0,randZ);
-            glVertex3d(randX,0,randZ+2);
-            glVertex3d(randX,2,randZ+1);
-        glEnd();
-        glColor3f(0, 1, 0);
-        glBegin(GL_TRIANGLES);
-            glVertex3d(randX+2,0,randZ);
-            glVertex3d(randX,0,randZ+2);
-            glVertex3d(randX,2,randZ+1);
-        glEnd();
-        /*
-        glColor3f(0, 0, 1);
-        glBegin(GL_TRIANGLES);
-            glVertex3d(randX+2,0,randZ+2);
-            glVertex3d(randX-2,0,randZ+2);
-            glVertex3d(randX,2,randZ+2);
-        glEnd();
-        */
-
-    //door block; t = 2
-    }else if(randomBlock <= 30){
-
-        glColor3f(0.5,0.5,0.5);
-        glBegin(GL_POLYGON);
-            glTexCoord2f(0, 0); glVertex3f(leftDoor,20,-10.5);
-            glTexCoord2f(0, 1); glVertex3f(leftDoor,0,-10.5);
-            glTexCoord2f(1, 1); glVertex3f(leftDoor-10,0,-10.5);
-            glTexCoord2f(1, 0); glVertex3f(leftDoor-10,20,-10.5);
-        glEnd();
-        glBegin(GL_POLYGON);
-            glTexCoord2f(0, 0); glVertex3f(rightDoor,20,-10.5);
-            glTexCoord2f(0, 1); glVertex3f(rightDoor,0,-10.5);
-            glTexCoord2f(1, 1); glVertex3f(rightDoor+10,0,-10.5);
-            glTexCoord2f(1, 0); glVertex3f(rightDoor+10,20,-10.5);
-        glEnd();
-
-        leftDoor -= 0.1;
-        rightDoor += 0.1;
-
-        if(leftDoor <= -5){
-            leftDoor = -5;
-            rightDoor = 5;
-        }
-
-        glColor3f(1,1,1);
-        glTranslatef(0, 0, -10);
-        int i, x, y;
-        double radius = 2.5;
-        double twicePi = 2.0 * 3.142;
-        x = rightDoor+0.1, y = 15;
-        glBegin(GL_TRIANGLE_FAN); //BEGIN CIRCLE
-        glVertex2f(x, y); // center of circle
-        for (i = 0; i <= 20; i++)   {
-            glVertex2f (
-                (x + (radius * cos(i * twicePi / 20))), (y + (radius * sin(i * twicePi / 20)))
-                );
-        }
-        glEnd(); //END
-        
+    
+    for(list<triangle *>::iterator i = listOfTriangles.begin(); i != listOfTriangles.end(); ++i){
+        triangle * currentTriangle = *i;
+        currentTriangle->draw();
     }
+    
 }
 
 bool envBlock::isExpired(float camZ){
@@ -192,7 +120,7 @@ void envBlock::setFloorWallsCeilingPoints(){
     rightWall[3][1] = 0;
     rightWall[3][2] = -1*width;
     
-//    listOfSurfaces.push_back(new surface(rightWall));
+    listOfSurfaces.push_back(new surface(rightWall));
     
     leftWall[0][0] = -1*length/2;
     leftWall[0][1] = 0;
@@ -207,7 +135,7 @@ void envBlock::setFloorWallsCeilingPoints(){
     leftWall[3][1] = 0;
     leftWall[3][2] = -1*width;
     
-//    listOfSurfaces.push_back(new surface(leftWall));
+    listOfSurfaces.push_back(new surface(leftWall));
     
     ceiling[0][0] = length/2;
     ceiling[0][1] = height;
@@ -222,20 +150,65 @@ void envBlock::setFloorWallsCeilingPoints(){
     ceiling[3][1] = height;
     ceiling[3][2] = -1*width;
     
-//    listOfSurfaces.push_back(new surface(ceiling));
+    listOfSurfaces.push_back(new surface(ceiling));
 }
 
 void envBlock::checkCollisions(list<particle *> listOfParticles){
     for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
         particle * currentParticle = *i;
-        for(list<surface *>::iterator j = listOfSurfaces.begin(); j != listOfSurfaces.end(); ++j){
-            surface * currentSurface = *j;
-            float * temp = currentParticle->getPosition();
-//            printf("temp: %f, %f, %f\n", temp[0], temp[1], temp[2]);
-            if(currentSurface->isCoplanar(temp)){
-                printf("gogogo");
-                currentParticle->invertDirection(1);
+        if(translateZ-width<=currentParticle->position->z && currentParticle->position->z<=translateZ){
+            
+            
+            
+            
+            for(list<surface *>::iterator j = listOfSurfaces.begin(); j != listOfSurfaces.end(); ++j){
+                float * particlePos = currentParticle->getPosition();
+                surface * currentSurface = *j;
+                float * intersection = currentSurface->getIntersection(particlePos, currentParticle->getDirection(), translateZ);
+                if(intersection!=NULL){
+                    float dist = currentSurface->distance(particlePos, intersection);
+                    if(dist < 4)
+                        if(currentSurface->pointInSurface(intersection, translateZ)){
+                            currentParticle->reflectDirection(currentSurface->n);
+                        }
+                    
+                }
             }
+            
+            
+            
+            for(list<triangle *>::iterator i = listOfTriangles.begin(); i != listOfTriangles.end(); ++i){
+                triangle * currentTriangle = *i;
+                for(list<surface *>::iterator j = currentTriangle->listOfSurfaces.begin(); j != currentTriangle->listOfSurfaces.end(); ++j){
+                        surface * currentSurface = *j;
+                        float * particlePos_1 = currentParticle->getPosition();
+                        float * intersection_1 = currentSurface->getIntersection(particlePos_1, currentParticle->getDirection(), currentTriangle->getZPosition(translateZ));
+                        if(intersection_1!=NULL){
+                            float dist = currentSurface->distance(particlePos_1, intersection_1);
+                            if(dist < 3){
+                                if(currentSurface->pointInSurface(intersection_1, translateZ)){
+//                                    printf("%f %f",  currentTriangle->getZPosition(translateZ) , currentSurface->points[0][2]);
+                                    currentParticle->reflectDirection(currentSurface->n);
+                                    currentTriangle->triangleHit();
+                                }
+                            }
+                        
+                        }
+                }
+                
+            }
+            
+            
+            
+            
         }
     }
+}
+
+float * envBlock::crossProduct(float v1[3], float v2[3]){
+    float * n = new float[3];
+    n[0] = v1[1]*v2[2] - v1[2]*v2[1];
+    n[1] = v1[2]*v2[0] - v1[0]*v2[2];
+    n[3] = v1[2]*v2[0] - v1[0]*v2[2];
+    return n;
 }

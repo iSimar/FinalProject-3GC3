@@ -15,8 +15,8 @@
 #  include <GL/gl.h>
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
+#  include <Windows.h>
 #endif
-#include <math.h>   
 #include <iostream>
 
 #include "game.h"
@@ -29,34 +29,33 @@ int firstPersonMode = ON;
 
 float camPos[] = {50, 50, 50};
 
-float lightpos[] = {-10, 20, -60, 1.0};
-float lightpos1[] = {0, 10, 20, 1.0};
-float lightpos2[] = {-10, 0, -60, 1.0};
-float lightpos3[] = {10, 0, -60, 1.0};
-float lightDir[] = {0, 0 ,1};
+//float lightpos1[] = {-10, 20, -60, 1.0};
+//float lightpos1[] = {0, 10, 20, 1.0};
+float lightpos[] = {0, -10, 53, 1.0};
+float lightpos1[] = {-130, -10, 79, 1.0};
+float lightpos2[] = {0, -10, 79, 1.0};
+float lightDir[] = {0, 1 ,-1};
+//float lightDir[] = {0,  ,0};
 float lightDif[] = {1, 1, 1, 1};
 float lightSpec[] = {1, 1, 1, 1 };
-
-GLuint filter;                      // Which Filter To Use
-GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };   // Storage For Three Types Of Fog
-GLuint fogfilter= 2;                    // Which Fog To Use
-GLfloat fogColor[4]= {0.5f, 0.5f, 0.5f, 1.0f};      // Fog Color
 
 game * mainGame = new game();
 
 void display(){
     //setup of material values for light
     float m_amb[] = {0.23, 0.22, 0.23, 1.0};
-    float m_dif[] = {0.2, 0.2, 0.2, 1.0};
-    float m_spec[] = {0.10, 0.1, 0.1, 1.0};
-    float shiny = 35;
-    
-    //    enable material
+    float m_dif[] = {0.9, 0.9, 0.9, 1.0};
+    float m_spec[] = {0.1, 0.1, 0.1, 1.0};
+    float shiny = 1;
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_dif);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec);
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
     glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
+
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -68,17 +67,7 @@ void display(){
         mainGame->setFPLook();
     
     mainGame->draw();
-
-    glClearColor(0.5f,0.5f,0.5f,1.0f);          // We'll Clear To The Color Of The Fog ( Modified )
- 
-    glFogi(GL_FOG_MODE, fogMode[fogfilter]);        // Fog Mode
-    glFogfv(GL_FOG_COLOR, fogColor);            // Set Fog Color
-    glFogf(GL_FOG_DENSITY, 0.35f);              // How Dense Will The Fog Be
-    glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
-    glFogf(GL_FOG_START, 35.0f);             // Fog Start Depth
-    glFogf(GL_FOG_END, 5.0f);               // Fog End Depth
-    glEnable(GL_FOG);                   // Enables GL_FOG
-
+    
     glutSwapBuffers();
     
 }
@@ -207,25 +196,36 @@ void keyboard(unsigned char key, int x, int y){
         case 'm':
             camPos[1] -= 2;
             break;
-        case 'a':
-            mainGame->fpCamPos[0] -= 2;
-            if(mainGame->fpCamPos[0]< -8){
-                mainGame->fpCamPos[0] = -8;
-            }
+        case 'j':
+        case 'J':
+            lightpos1[1] -= 1;
+//            light_pos2[1] -= 10;
             break;
-        case 'd':
-            mainGame->fpCamPos[0] += 2;
-            if(mainGame->fpCamPos[0] > 8){
-                mainGame->fpCamPos[0] = 8;
-            }
+            // if 'u' -> increase light 1 brightness
+        case 'u':
+        case 'U':
+            lightpos1[1] += 1;
+//            light_pos2[1] += 10;
             break;
-        case 'w':
-            mainGame->speedup();
+        case 'h':
+        case 'H':
+            lightpos1[2] += 1;
+//            light_pos2[2] += 10;
             break;
-        case 's':
-            mainGame->speeddown();
+        case 'K':
+        case 'k':
+            lightpos1[2] -= 1;
+//            light_pos2[2] -= 10;
             break;
     }
+    printf("%f %f %f\n", lightpos1[0], lightpos1[1], lightpos1[2]);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
+//    glLightfv(GL_LIGHT1, GL_POSITION, light_pos2);
+    glPopMatrix();
+    
     glutPostRedisplay();
 }
 
@@ -235,6 +235,28 @@ void init(void){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glEnable(GL_COLOR_MATERIAL);
+    
+    glEnable(GL_LIGHTING);
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+//    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
+    
+    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
+//    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDif);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, lightSpec);
+    
+    glLightfv(GL_LIGHT2, GL_POSITION, lightpos2);
+    //    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, lightDif);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, lightSpec);
+    
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+//    glEnable(GL_LIGHT2);
+
+    
+    gluPerspective(45, 1, 1, 100);
 
     glEnable(GL_TEXTURE_2D);   // enable texture mapping
     glShadeModel(GL_SMOOTH);   // enable smooth shading
@@ -243,20 +265,6 @@ void init(void){
     glDepthFunc(GL_LEQUAL);    // configure depth testing
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);          // really nice perspective calculations
     
-    glEnable(GL_LIGHTING);
-    
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
-    
-    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDif);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, lightSpec);
-    
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-    
-    gluPerspective(45, 1, 1, 100);
 }
 
 // load image file into texture object

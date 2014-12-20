@@ -16,6 +16,7 @@
 #  include <GL/gl.h>
 #  include <GL/glu.h>
 #  include <GL/freeglut.h>
+#  include <Windows.h>
 #endif
 
 #include <iostream>
@@ -31,26 +32,11 @@ game::game(){
     trainOfEnvBlocks.push_back(new envBlock(envBlockSize[0], envBlockSize[1], envBlockSize[2]));
 }
 
-void game::speedup(){
-    movingSpeed += 0.2;
-    if(movingSpeed >= 2){
-        movingSpeed = 2;
-    }
-}
-
-void game::speeddown(){
-    movingSpeed -= 0.2;
-    if(movingSpeed <= 1){
-        movingSpeed = 1;
-    }
-}
-
 void game::updateMethod(){
     for(list<envBlock *>::iterator i = trainOfEnvBlocks.begin(); i != trainOfEnvBlocks.end(); ++i){
         envBlock * currentEnvBlock = *i;
         if(currentEnvBlock->isExpired(fpCamPos[2]))
-           //trainOfEnvBlocks.erase(i)
-            ;
+            trainOfEnvBlocks.erase(i);
         else{
             currentEnvBlock->addToTranslateZ(movingSpeed);
             currentEnvBlock->checkCollisions(listOfParticles);
@@ -64,8 +50,7 @@ void game::updateMethod(){
     for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
         particle * currentParticle = *i;
         if(currentParticle->isExpired(fpCamPos[2])){
-           // listOfParticles.erase(i)
-            ;
+            listOfParticles.erase(i);
         }
         else{
             currentParticle->move(0.5, 100, 1, movingSpeed);
@@ -99,14 +84,14 @@ void game::screenClick(int x, int y){
      */
     float x_world = -1*(((screenSizeX/2)-x)/screenSizeX)*((envBlockSize[0])/2);
     float y_world = (((screenSizeY/2)-y)/screenSizeY)*((envBlockSize[1])/2)+fpCamPos[1];
+    
 
     listOfParticles.push_back(new particle(
                                            new point(fpCamPos[0], fpCamPos[1], fpCamPos[2]-10),
-                                           new point(x_world, y_world-2, fpCamPos[2]-30),
-                                           movingSpeed*0.06,
+                                           new point(x_world*1.5, y_world-2, fpCamPos[2]-30),
+                                           movingSpeed*0.04,
                                            1,
                                            300
                                            )
                               );
 }
-
