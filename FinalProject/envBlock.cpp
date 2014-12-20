@@ -120,10 +120,10 @@ void envBlock::draw(){
 
         glColor3f(0.5,0.5,0.5);
         glBegin(GL_POLYGON);
-            glVertex3f(leftDoor,20,-10.5);
-            glVertex3f(leftDoor,0,-10.5);
-            glVertex3f(leftDoor-10,0,-10.5);
-            glVertex3f(leftDoor-10,20,-10.5);
+            glTexCoord2f(0, 1); glVertex3f(leftDoor,20,-10.5);
+            glTexCoord2f(1, 1); glVertex3f(leftDoor,0,-10.5);
+            glTexCoord2f(1, 0); glVertex3f(leftDoor-10,0,-10.5);
+            glTexCoord2f(0, 0); glVertex3f(leftDoor-10,20,-10.5);
         glEnd();
         glBegin(GL_POLYGON);
             glVertex3f(rightDoor,20,-10.5);
@@ -154,7 +154,7 @@ void envBlock::draw(){
                 );
         }
         glEnd(); //END
-
+        
     }
 }
 

@@ -1,143 +1,113 @@
-//
-//  particle.cpp
-//  Assignment 2
-//
-//  Created by Simarpreet Singh on 2014-11-02.
-//  Copyright (c) 2014 Simarpreet Singh. All rights reserved.
-//
-
+#include <stdio.h>
 #include <stdlib.h>
-#include "point.h"
-#include "particle.h"
 
-particle::particle(point * position_, float size_){
-    position = position_;
-    size = size_;
-    rgb_color = new int[3];
-    rgb_color[0] = 255;
-    rgb_color[1] = 0;
-    rgb_color[2] = 0;
-    rotation = new int[3];
-    rotation[0] = 0;
-    rotation[1] = 0;
-    rotation[2] = 0;
-}
+#include <GL/glut.h>
 
-particle::particle(point * position_, point * direction_, float size_, float lifespan_){
-    position = position_;
-    direction = direction_;
-    speed = 0.02;
-    rotation = generateRandomRotationAngles();
-    size = size_;
-    rgb_color = generateRandomRGB();
-    lifespan = lifespan_;
-}
-
-particle::particle(point * position_, point * direction_, float speed_,  float size_, float lifespan_){
-    position = position_;
-    direction = direction_;
-    speed = speed_;
-    rotation = generateRandomRotationAngles();
-    size = size_;
-    rgb_color = generateRandomRGB();
-    lifespan = lifespan_;
-}
-
-particle::particle(point * position_, point * direction_, float speed_, float size_, float lifespan_, int * color_){
-    position = position_;
-    direction = direction_;
-    speed = speed_;
-    rotation = generateRandomRotationAngles();
-    size = size_;
-    rgb_color = color_;
-    lifespan = lifespan_;
-}
+int width = 0;
+int height = 0;
 
 
-int * particle::generateRandomRGB(){
-    int * rgb_color = new int[3];
-    rgb_color[0] = (int)(rand()%255);
-    rgb_color[1] = (int)(rand()%255);
-    rgb_color[2] = (int)(rand()%255);
-    return rgb_color;
-}
-
-int * particle::generateRandomRotationAngles(){
-    int * rotationAngles = new int[3];
-    rotationAngles[0] = (int)(rand()%360);
-    rotationAngles[1] = (int)(rand()%360);
-    rotationAngles[2] = (int)(rand()%360);
-    return rotationAngles;
-}
-
-float * particle::getPosition(){
-    float * positionArr = new float[3];
-    positionArr[0] = position->x;
-    positionArr[1] = position->y;
-    positionArr[2] = position->z;
-    return positionArr;
-}
-
-int * particle::getRGBColor(){
-    return rgb_color;
-}
-
-int * particle::getRotationAngles(){
-    return rotation;
-}
-
-float particle::getSize(){ return size; }
+GLubyte *image;
 
 
-void particle::move(float gravity, float floorSize, int friction){
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    /* set raster position, and flip coordinates to account for data "orientation" in image data array*/
+    glRasterPos2i(width,0);
+    glPixelZoom(-1, 1);
     
-    if(isTouchingFloor(floorSize)){
-        invertDirection(friction);
-    }
-    
-    position->x += direction->x * speed;
-    position->y += direction->y  * speed;
-    position->z += direction->z * speed;
-    
-    direction->y -= gravity;
-    if((int)age%25==0){
-        addTrailingParticle();
-    }
-    
-    incrementAge();
-    
-    rotation[0]+=1;
-    rotation[1]+=1;
-    rotation[2]+=1;
+    /* draw the pixels from the image data array */
+    glDrawPixels(width,height,GL_RGB, GL_UNSIGNED_BYTE, image);
+    glFlush();
 }
 
-void particle::incrementAge(){ age++; }
 
-bool particle::isExpired(float floorSize){
-    if(position->y<-2 || age>lifespan){
-        return 1;
-    }
-    return 0;
+void myreshape(int h, int w)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0.0, (GLfloat) width, 0.0, (GLfloat) height);
+    glMatrixMode(GL_MODELVIEW);
 }
 
-bool particle::isTouchingFloor(float floorSize){
-    if(position->x<=floorSize && position->x>=-1*floorSize){
-        if(position->z<=floorSize && position->z>=-1*floorSize){
-            if(position->y<=size){
-                return 1;
-            }
-        }
+GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
+{
+    GLubyte* img;
+    FILE *fd;
+    int n, m;
+    int  k, nm;
+    char c;
+    int i;
+    char b[100];
+    float s;
+    int red, green, blue;
+    
+    /* first open file and check if it's an ASCII PPM (indicated by P3 at the start) */
+    fd = fopen(file, "r");
+    fscanf(fd,"%[^\n] ",b);
+    if(b[0]!='P'|| b[1] != '3')
+    {
+        printf("%s is not a PPM file!\n",file); 
+        exit(0);
     }
-    return 0;
+    printf("%s is a PPM file\n", file);
+    fscanf(fd, "%c",&c);
+
+    /* next, skip past the comments - any line starting with #*/
+    while(c == '#') 
+    {
+        fscanf(fd, "%[^\n] ", b);
+        printf("%s\n",b);
+        fscanf(fd, "%c",&c);
+    }
+    ungetc(c,fd); 
+
+    /* now get the dimensions and max colour value from the image */
+    fscanf(fd, "%d %d %d", &n, &m, &k);
+
+    printf("%d rows  %d columns  max value= %d\n",n,m,k);
+
+    /* calculate number of pixels and allocate storage for this */
+    nm = n*m;
+    img = malloc(3*sizeof(GLuint)*nm);
+    s=255.0/k;
+
+    /* for every pixel, grab the read green and blue values, storing them in the image data array */
+    for(i=0;i<nm;i++) 
+    {
+        fscanf(fd,"%d %d %d",&red, &green, &blue );
+        img[3*nm-3*i-3]=red*s;
+        img[3*nm-3*i-2]=green*s;
+        img[3*nm-3*i-1]=blue*s;
+    }
+
+    /* finally, set the "return parameters" (width, height, max) and return the image array */
+    *width = n;
+    *height = m;
+    *max = k;
+
+    return img;
 }
 
-void particle::invertDirection(int friction){
-    direction->y*=-1;
-    if(friction==1){
-        speed*=0.9;
-    }
-}
+void main(int argc, char *argv[])
+{
+    int k;
 
-void particle::addTrailingParticle(){
-    trailingParticles.push_back(new particle(new point(position->x,position->y,position->z), 0.06));
+    /* use PPM load function to load the snail - other PPMs also provided so you can test them. 
+     * You can also create your own using the process outlined in the slides 
+     */
+    image = LoadPPM("snail_a.ppm", &width, &height, &k);
+
+    /* nothing special down here */
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB );
+    glutInitWindowSize(width, height);
+    glutCreateWindow("image");
+    glClearColor (1.0, 1.0, 1.0, 1.0);
+    glutReshapeFunc(myreshape);
+    glutDisplayFunc(display);
+    glutMainLoop();
+
 }
