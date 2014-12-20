@@ -36,6 +36,8 @@ void game::updateMethod(){
 //    setScore(score);
     for(list<envBlock *>::iterator i = trainOfEnvBlocks.begin(); i != trainOfEnvBlocks.end(); ++i){
         envBlock * currentEnvBlock = *i;
+        numOfBalls += currentEnvBlock->ballsToAdd;
+        currentEnvBlock->ballsToAdd = 0;
         if(currentEnvBlock->isExpired(fpCamPos[2]))
             trainOfEnvBlocks.erase(i);
         else{
@@ -136,6 +138,7 @@ void game::drawStrokeText(char* text, int x, int y)
     
     glTranslatef(x, y, 0);
     glScalef(0.20, 0.20, 0.20);
+    glColor3f(0, 0, 0);
     
     char* c;  //character iterator (ptr)
     for(c = text; *c != '\0'; c++) //stop when we hit null character

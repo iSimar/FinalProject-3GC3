@@ -21,6 +21,8 @@ public:
     float width;
     float height;
     
+    int ballsToAdd = 0;
+    
     float rgb[3];
     
     float translateZ;

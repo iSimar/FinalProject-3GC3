@@ -78,7 +78,7 @@ void envBlock::draw(){
     glTexCoord2f(1, 0); glVertex3d(leftWall[3][0], leftWall[3][1], leftWall[3][2]);
     glNormal3fv(crossProduct(leftWall[0], leftWall[1]));
     glEnd();
-    glColor3f(rgb[0], rgb[1], rgb[2]);
+    glColor3f(1, 1, 1);
     glBegin(GL_QUADS);
     for(int i= 0; i<4; i++)
         glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);
@@ -201,6 +201,7 @@ void envBlock::checkCollisions(list<particle *> listOfParticles){
 //                                    printf("%f %f",  currentTriangle->getZPosition(translateZ) , currentSurface->points[0][2]);
                                     currentParticle->reflectDirection(currentSurface->n);
                                     currentTriangle->triangleHit();
+                                    ballsToAdd += 2;
                                 }
                             }
                         

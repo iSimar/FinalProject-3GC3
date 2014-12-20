@@ -75,12 +75,12 @@ void display(){
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    mainGame->drawStrokeText((char*)"Score:", 400, 555);
+    mainGame->drawStrokeText((char*)"Score:", 400-180, 555);
     char* score = (char*)mainGame->setScore().c_str();
-    mainGame->drawStrokeText(score, 500, 555);
-    mainGame->drawStrokeText((char*)"Balls Left:", 400, 525);
+    mainGame->drawStrokeText(score, 500-180, 555);
+    mainGame->drawStrokeText((char*)"Balls Left:", 400-180, 525);
     char* ballLeft = (char*)mainGame->setBallsLeft().c_str();
-    mainGame->drawStrokeText(ballLeft, 550, 525);
+    mainGame->drawStrokeText(ballLeft, 550-180, 525);
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
@@ -132,7 +132,6 @@ unsigned char* loadPPM(const char* filename, int& width, int& height){
     fclose(fp);
     if (read != 1)
     {
-        std::cerr << "error parsing ppm file, incomplete data" << std::endl;
         delete[] rawData;
         width = 0;
         height = 0;
