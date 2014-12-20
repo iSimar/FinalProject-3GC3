@@ -78,7 +78,7 @@ void display(){
     glFogf(GL_FOG_START, 35.0f);             // Fog Start Depth
     glFogf(GL_FOG_END, 5.0f);               // Fog End Depth
     glEnable(GL_FOG);                   // Enables GL_FOG
-    
+
     glutSwapBuffers();
     
 }
@@ -267,7 +267,7 @@ void loadTexture()
   unsigned char* tdata;  // texture pixel data
   
   // Load image file
-  tdata = loadPPM("start_1.ppm", twidth, theight);
+  tdata = loadPPM("Brickwall.ppm", twidth, theight);
   if (tdata==NULL) return;
   
   // Create ID for texture
