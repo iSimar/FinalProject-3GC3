@@ -12,11 +12,14 @@
 #include <stdio.h>
 #include <list>
 #include <math.h>
+//#include "triangle.h"
 
 class surface{
 public:
     float objectID;
     float points[4][3];
+    
+    bool isTriangle = 0;
     
     float originalZPoints[4];
     
@@ -26,13 +29,14 @@ public:
     float planeEquationY;
     float planeEquationZ;
     float planeEquationD;
-
+    
+    surface(float pointsArray[3][3], bool boolTriangle);
     
     surface(float pointsArray[4][3]);
     
     void updatePoints(float translateZ);
     
-    float * getIntersection(float origin[3], float direction[3]);
+    float * getIntersection(float origin[3], float direction[3], float translateZ);
     bool pointInSurface(float point[3], float translateZ);
     
     //---Utility Functions:

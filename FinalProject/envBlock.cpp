@@ -26,11 +26,16 @@ envBlock::envBlock(float l, float w, float h){
 //    translateZ=0;
     translateZ = -100;
     
-    rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+//    rgb[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+//    rgb[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+//    rgb[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     
+    rgb[0] = 0.122;
+    rgb[1] = 0.745;
+    rgb[2] = 0.631;
     setFloorWallsCeilingPoints();
+    
+    listOfTriangles.push_back(new triangle(length, width));
 
 }
 
@@ -45,20 +50,30 @@ void envBlock::draw(){
     glBegin(GL_QUADS);
         for(int i= 0; i<4; i++)
             glVertex3d(floor[i][0], floor[i][1], floor[i][2]);
+    glNormal3fv(crossProduct(floor[0], floor[1]));
     glEnd();
     glBegin(GL_QUADS);
         for(int i= 0; i<4; i++)
             glVertex3d(rightWall[i][0], rightWall[i][1], rightWall[i][2]);
+    glNormal3fv(crossProduct(rightWall[0], rightWall[1]));
     glEnd();
     glBegin(GL_QUADS);
     for(int i= 0; i<4; i++)
         glVertex3d(leftWall[i][0], leftWall[i][1], leftWall[i][2]);
+    glNormal3fv(crossProduct(leftWall[0], leftWall[1]));
     glEnd();
     glBegin(GL_QUADS);
     for(int i= 0; i<4; i++)
         glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);
+    glNormal3fv(crossProduct(ceiling[0], ceiling[1]));
     glEnd();
     glPopMatrix();
+    
+    for(list<triangle *>::iterator i = listOfTriangles.begin(); i != listOfTriangles.end(); ++i){
+        triangle * currentTriangle = *i;
+        currentTriangle->draw();
+    }
+    
 }
 
 bool envBlock::isExpired(float camZ){
@@ -130,16 +145,17 @@ void envBlock::setFloorWallsCeilingPoints(){
 void envBlock::checkCollisions(list<particle *> listOfParticles){
     for(list<particle *>::iterator i = listOfParticles.begin(); i != listOfParticles.end(); ++i){
         particle * currentParticle = *i;
-        
         if(translateZ-width<=currentParticle->position->z && currentParticle->position->z<=translateZ){
-//            printf("%f <= %f <= %f\n", translateZ-width, currentParticle->position->z, translateZ);
+            
+            
+            
+            
             for(list<surface *>::iterator j = listOfSurfaces.begin(); j != listOfSurfaces.end(); ++j){
                 float * particlePos = currentParticle->getPosition();
                 surface * currentSurface = *j;
-                float * intersection = currentSurface->getIntersection(particlePos, currentParticle->getDirection());
+                float * intersection = currentSurface->getIntersection(particlePos, currentParticle->getDirection(), translateZ);
                 if(intersection!=NULL){
                     float dist = currentSurface->distance(particlePos, intersection);
-//                    printf("%f\n", dist);
                     if(dist < 4)
                         if(currentSurface->pointInSurface(intersection, translateZ)){
                             currentParticle->reflectDirection(currentSurface->n);
@@ -147,6 +163,41 @@ void envBlock::checkCollisions(list<particle *> listOfParticles){
                     
                 }
             }
+            
+            
+            
+            for(list<triangle *>::iterator i = listOfTriangles.begin(); i != listOfTriangles.end(); ++i){
+                triangle * currentTriangle = *i;
+                for(list<surface *>::iterator j = currentTriangle->listOfSurfaces.begin(); j != currentTriangle->listOfSurfaces.end(); ++j){
+                        surface * currentSurface = *j;
+                        float * particlePos_1 = currentParticle->getPosition();
+                        float * intersection_1 = currentSurface->getIntersection(particlePos_1, currentParticle->getDirection(), currentTriangle->getZPosition(translateZ));
+                        if(intersection_1!=NULL){
+                            float dist = currentSurface->distance(particlePos_1, intersection_1);
+                            if(dist < 3){
+                                if(currentSurface->pointInSurface(intersection_1, translateZ)){
+//                                    printf("%f %f",  currentTriangle->getZPosition(translateZ) , currentSurface->points[0][2]);
+                                    currentParticle->reflectDirection(currentSurface->n);
+                                    currentTriangle->triangleHit();
+                                }
+                            }
+                        
+                        }
+                }
+                
+            }
+            
+            
+            
+            
         }
     }
+}
+
+float * envBlock::crossProduct(float v1[3], float v2[3]){
+    float * n = new float[3];
+    n[0] = v1[1]*v2[2] - v1[2]*v2[1];
+    n[1] = v1[2]*v2[0] - v1[0]*v2[2];
+    n[3] = v1[2]*v2[0] - v1[0]*v2[2];
+    return n;
 }

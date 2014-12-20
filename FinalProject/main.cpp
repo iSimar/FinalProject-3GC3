@@ -28,11 +28,13 @@ int firstPersonMode = ON;
 
 float camPos[] = {50, 50, 50};
 
-float lightpos[] = {-10, 20, -60, 1.0};
-float lightpos1[] = {0, 10, 20, 1.0};
-float lightpos2[] = {-10, 0, -60, 1.0};
-float lightpos3[] = {10, 0, -60, 1.0};
-float lightDir[] = {0, 0 ,1};
+//float lightpos1[] = {-10, 20, -60, 1.0};
+//float lightpos1[] = {0, 10, 20, 1.0};
+float lightpos[] = {0, -10, 53, 1.0};
+float lightpos1[] = {-130, -10, 79, 1.0};
+float lightpos2[] = {0, -10, 79, 1.0};
+float lightDir[] = {0, 1 ,-1};
+//float lightDir[] = {0,  ,0};
 float lightDif[] = {1, 1, 1, 1};
 float lightSpec[] = {1, 1, 1, 1 };
 
@@ -41,11 +43,10 @@ game * mainGame = new game();
 void display(){
     //setup of material values for light
     float m_amb[] = {0.23, 0.22, 0.23, 1.0};
-    float m_dif[] = {0.2, 0.2, 0.2, 1.0};
-    float m_spec[] = {0.10, 0.1, 0.1, 1.0};
-    float shiny = 35;
-    
-    //    enable material
+    float m_dif[] = {0.9, 0.9, 0.9, 1.0};
+    float m_spec[] = {0.1, 0.1, 0.1, 1.0};
+    float shiny = 1;
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_dif);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec);
@@ -139,7 +140,36 @@ void keyboard(unsigned char key, int x, int y){
         case 'm':
             camPos[1] -= 2;
             break;
+        case 'j':
+        case 'J':
+            lightpos1[1] -= 1;
+//            light_pos2[1] -= 10;
+            break;
+            // if 'u' -> increase light 1 brightness
+        case 'u':
+        case 'U':
+            lightpos1[1] += 1;
+//            light_pos2[1] += 10;
+            break;
+        case 'h':
+        case 'H':
+            lightpos1[2] += 1;
+//            light_pos2[2] += 10;
+            break;
+        case 'K':
+        case 'k':
+            lightpos1[2] -= 1;
+//            light_pos2[2] -= 10;
+            break;
     }
+    printf("%f %f %f\n", lightpos1[0], lightpos1[1], lightpos1[2]);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
+//    glLightfv(GL_LIGHT1, GL_POSITION, light_pos2);
+    glPopMatrix();
+    
     glutPostRedisplay();
 }
 
@@ -153,15 +183,22 @@ void init(void){
     glEnable(GL_LIGHTING);
     
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
+//    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
     
     glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
+//    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDif);
     glLightfv(GL_LIGHT1, GL_SPECULAR, lightSpec);
     
+    glLightfv(GL_LIGHT2, GL_POSITION, lightpos2);
+    //    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lightDir);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, lightDif);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, lightSpec);
+    
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
+//    glEnable(GL_LIGHT2);
+
     
     gluPerspective(45, 1, 1, 100);
 }

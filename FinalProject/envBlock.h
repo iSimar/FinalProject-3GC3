@@ -10,6 +10,7 @@
 #include <list>
 #include "particle.h"
 #include "surface.h"
+#include "triangle.h"
 
 using namespace std;
 
@@ -30,6 +31,8 @@ public:
     
     list<surface *> listOfSurfaces;
     
+    list<triangle *> listOfTriangles;
+    
     envBlock(float l, float w, float h);
     
     void addToTranslateZ(float i);
@@ -43,5 +46,7 @@ public:
     list<surface *> getSurfaces();
     
     void checkCollisions(list<particle *> listOfParticles);
+    
+    float * crossProduct(float v1[3], float v2[3]);
     
 };
