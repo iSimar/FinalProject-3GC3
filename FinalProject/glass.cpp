@@ -42,12 +42,13 @@ float glass::randomFloat(float a, float b) {
 
 void glass::draw(){
     glPushMatrix();
-    glColor3fv(rgb);
+    glColor4fv(rgba);
     glBegin(GL_QUADS);
     for(int i= 0; i<4; i++){
         glVertex2fv(vectors[i]);
 //        glVertex3f(vectors[i][0], vectors[i][1], vectors[i][2]);
     }
+    glNormal3f(0, 0, 1);
     glEnd();
     glPopMatrix();
 }

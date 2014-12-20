@@ -32,6 +32,8 @@ game::game(){
 }
 
 void game::updateMethod(){
+    score+=10;
+//    setScore(score);
     for(list<envBlock *>::iterator i = trainOfEnvBlocks.begin(); i != trainOfEnvBlocks.end(); ++i){
         envBlock * currentEnvBlock = *i;
         if(currentEnvBlock->isExpired(fpCamPos[2]))
@@ -79,6 +81,11 @@ void game::setFPLook(){
 }
 
 void game::screenClick(int x, int y){
+    numOfBalls-=1;
+    if(numOfBalls==0){
+        printf("GAMEOVERRRRR!!!");
+    }
+//    setBallsLeft(numOfBalls);
 //    printf("%i %f\n",x,(screenSizeY - y));
     /* Converting x and y to world x and y
      */
@@ -104,11 +111,56 @@ void game::glassCameraCollision(){
         if(glassZ>0){
             if(currentGlass->vectors[1][0]<=0 && 0<=currentGlass->vectors[0][0]){
                 if(currentGlass->vectors[0][1]<=10 && 10<=currentGlass->vectors[3][1]){
-                    printf("CRASH!!!!!");
+                    printf("GAMEOVERRRRR!!!");
             }
         }
             
     }
         
 }
+}
+
+
+
+/*
+ Code birunthaa has added
+ drawtext conversion, from course website
+ */
+void game::drawStrokeText(char* text, int x, int y)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 600, 0, 600);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    glTranslatef(x, y, 0);
+    glScalef(0.20, 0.20, 0.20);
+    
+    char* c;  //character iterator (ptr)
+    for(c = text; *c != '\0'; c++) //stop when we hit null character
+    {
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *c); //print one char
+    }
+}
+/*
+ Code birunthaa has added
+ set score when ball hits the walls
+ */
+string game:: setScore(){
+    int score2 = score;
+    //score+= 100;
+    string finalScore = to_string(score2);
+    return finalScore;
+}
+/*
+ Code birunthaa has added
+ balls left counter
+ */
+string game:: setBallsLeft(){
+    int ballsLeft = numOfBalls;
+    //ballsLeft-=1;
+    
+    string numBallsLeft = to_string(ballsLeft);
+    return numBallsLeft;
 }

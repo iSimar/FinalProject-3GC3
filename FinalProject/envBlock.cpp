@@ -127,7 +127,7 @@ void envBlock::setFloorWallsCeilingPoints(){
     rightWall[3][1] = 0;
     rightWall[3][2] = -1*width;
     
-//    listOfSurfaces.push_back(new surface(rightWall));
+    listOfSurfaces.push_back(new surface(rightWall));
     
     leftWall[0][0] = -1*length/2;
     leftWall[0][1] = 0;

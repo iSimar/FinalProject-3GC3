@@ -19,6 +19,9 @@ public:
     float screenSizeX = 600;
     float screenSizeY = 600;
     
+    int numOfBalls = 8;
+    int score = 0;
+    
     float fpCamPos[3];
     float movingSpeed = 0.7;
     
@@ -35,4 +38,8 @@ public:
     void setFPLook();
     
     void screenClick(int x, int y);
+    
+    void drawStrokeText(char* text, int x, int y);
+    string setScore();
+    string setBallsLeft();
 };

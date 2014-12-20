@@ -72,6 +72,21 @@ void display(){
     
     mainGame->draw();
     
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    mainGame->drawStrokeText((char*)"Score:", 400, 555);
+    char* score = (char*)mainGame->setScore().c_str();
+    mainGame->drawStrokeText(score, 500, 555);
+    mainGame->drawStrokeText((char*)"Balls Left:", 400, 525);
+    char* ballLeft = (char*)mainGame->setBallsLeft().c_str();
+    mainGame->drawStrokeText(ballLeft, 550, 525);
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glEnable(GL_TEXTURE_2D);
+    
     glutSwapBuffers();
     
 }
