@@ -19,6 +19,8 @@ public:
     float screenSizeX = 600;
     float screenSizeY = 600;
     
+    bool isGameOver = 0;
+    
     int numOfBalls = 8;
     int score = 0;
     

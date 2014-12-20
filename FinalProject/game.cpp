@@ -85,7 +85,7 @@ void game::setFPLook(){
 void game::screenClick(int x, int y){
     numOfBalls-=1;
     if(numOfBalls==0){
-        printf("GAMEOVERRRRR!!!");
+        isGameOver = 1;
     }
 //    setBallsLeft(numOfBalls);
 //    printf("%i %f\n",x,(screenSizeY - y));
@@ -97,7 +97,7 @@ void game::screenClick(int x, int y){
 
     listOfParticles.push_back(new particle(
                                            new point(fpCamPos[0], fpCamPos[1], fpCamPos[2]-10),
-                                           new point(x_world*1.5, y_world-2, fpCamPos[2]-30),
+                                           new point(x_world*1.5, y_world-2, fpCamPos[2]-10),
                                            movingSpeed*0.04,
                                            1,
                                            300
@@ -113,7 +113,7 @@ void game::glassCameraCollision(){
         if(glassZ>0){
             if(currentGlass->vectors[1][0]<=0 && 0<=currentGlass->vectors[0][0]){
                 if(currentGlass->vectors[0][1]<=10 && 10<=currentGlass->vectors[3][1]){
-                    printf("GAMEOVERRRRR!!!");
+                    isGameOver = 1;
             }
         }
             

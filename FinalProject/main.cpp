@@ -28,6 +28,8 @@ int firstPersonMode = ON;
 
 float camPos[] = {50, 50, 50};
 
+int gamestatus = 0;
+
 //float lightpos1[] = {-10, 20, -60, 1.0};
 //float lightpos1[] = {0, 10, 20, 1.0};
 float lightpos[] = {0, -10, 53, 1.0};
@@ -65,30 +67,160 @@ void display(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    if(firstPersonMode==OFF)
+    if(firstPersonMode==OFF && gamestatus==1){
         gluLookAt(camPos[0], camPos[1], camPos[2], 0,10,0, 0,1,0);
-    else
+        mainGame->draw();
+    }else if(gamestatus==1){
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(450, 1, 1, 1000);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
         mainGame->setFPLook();
+        mainGame->draw();
+        
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        mainGame->drawStrokeText((char*)"Score:", 400-180, 555);
+        char* score = (char*)mainGame->setScore().c_str();
+        mainGame->drawStrokeText(score, 500-180, 555);
+        mainGame->drawStrokeText((char*)"Balls Left:", 400-180, 525);
+        char* ballLeft = (char*)mainGame->setBallsLeft().c_str();
+        mainGame->drawStrokeText(ballLeft, 550-180, 525);
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glEnable(GL_TEXTURE_2D);
+        
+    }else if(gamestatus==0){
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, 200, 0, 200);
+        
+        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
+        void * font2 = GLUT_BITMAP_9_BY_15;
+        void * font3 = GLUT_BITMAP_TIMES_ROMAN_10;
+        
+        //Title
+        glColor3f(1, 0, 0);
+        glRasterPos2i(70, 170);
+        string title = "WALL BLASTER";
+        for (string::iterator i = title.begin(); i != title.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font1, c);
+        }
+        //Instruction line 1
+        glColor3f(1, 1, 1);
+        glRasterPos2i(15, 130);
+        string desc1 = "CLICK TO FIRE BALLS. BREAK THE GLASS PLANES THAT COME AT YOU. IF YOU GET HIT BY ONE, YOU LOSE.";
+        for (string::iterator i = desc1.begin(); i != desc1.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+        //Instruction line 2
+        glRasterPos2i(15, 120);
+        string desc2 = "HITTING ONE OF THE MANY PYRAMIDS ON THE FLOOR WILL ADD THREE BALLS TO YOUR TOTAL BALL AMMO";
+        for (string::iterator i = desc2.begin(); i != desc2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+        //S
+        glRasterPos2i(80, 80);
+        string start = "(S)";
+        for (string::iterator i = start.begin(); i != start.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        //Q
+        glRasterPos2i(80, 60);
+        string quit = "(Q)";
+        for (string::iterator i = quit.begin(); i != quit.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        //Start
+        glColor3f(0, 0.5, 1);
+        glRasterPos2i(90, 80);
+        string start2 = "Start";
+        for (string::iterator i = start2.begin(); i != start2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        //Quit
+        glRasterPos2i(90, 60);
+        string quit2 = "Quit";
+        for (string::iterator i = quit2.begin(); i != quit2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font2, c);
+        }
+        //Name
+        glColor3f(1, 1, 1);
+        glRasterPos2i(15, 10);
+        string name = "BY: Simarpreet Singh (1216728), Birunthaa Umamahesan (1203142), Joseph Nguyen (1229287), Curran Tam (1231038)";
+        for (string::iterator i = name.begin(); i != name.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+    }else if(gamestatus == 2){
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, 200, 0, 200);
+        
+        //Pause Menu
+        glColor3f(1, 1, 1);
+        glRasterPos2i(80, 100);
+        string pause = "PAUSED";
+        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
+        for (string::iterator i = pause.begin(); i != pause.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font1, c);
+        }
+        //additional description
+        glRasterPos2i(60, 70);
+        void * font3 = GLUT_BITMAP_TIMES_ROMAN_10;
+        string desc2 = "PRESS (S) TO RESTART THE GAME OR (Q) TO QUIT";
+        for (string::iterator i = desc2.begin(); i != desc2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+    }
+    else if(gamestatus == 3){
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, 200, 0, 200);
+        //GAMEOVER
+        glColor3f(1, 0, 0);
+        glRasterPos2i(80, 100);
+        string gameover = "GAME OVER";
+        void * font1 = GLUT_BITMAP_TIMES_ROMAN_24;
+        for (string::iterator i = gameover.begin(); i != gameover.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font1, c);
+        }
+        glRasterPos2i(20, 130);
+        string gameover2 = "YOU HIT A GLASS OR RAN OUT OF BALLS!";
+        for (string::iterator i = gameover2.begin(); i != gameover2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font1, c);
+        }
+        //additional description
+        glColor3f(1, 1, 1);
+        glRasterPos2i(60, 70);
+        void * font3 = GLUT_BITMAP_TIMES_ROMAN_10;
+        string desc2 = "PRESS (S) TO RESTART THE GAME OR (Q) TO QUIT";
+        for (string::iterator i = desc2.begin(); i != desc2.end(); ++i){
+            char c = *i;
+            glutBitmapCharacter(font3, c);
+        }
+    }
     
-    mainGame->draw();
     
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    mainGame->drawStrokeText((char*)"Score:", 400-180, 555);
-    char* score = (char*)mainGame->setScore().c_str();
-    mainGame->drawStrokeText(score, 500-180, 555);
-    mainGame->drawStrokeText((char*)"Balls Left:", 400-180, 525);
-    char* ballLeft = (char*)mainGame->setBallsLeft().c_str();
-    mainGame->drawStrokeText(ballLeft, 550-180, 525);
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glEnable(GL_TEXTURE_2D);
     
+    glFlush();
     glutSwapBuffers();
-    
+
 }
 
 unsigned char* loadPPM(const char* filename, int& width, int& height){
@@ -102,7 +234,7 @@ unsigned char* loadPPM(const char* filename, int& width, int& height){
     
     if ( (fp=fopen(filename, "rb")) == NULL)
     {
-        std::cerr << "error reading ppm file, could not locate " << filename << std::endl;
+//        std::cerr << "error reading ppm file, could not locate " << filename << std::endl;
         width = 0;
         height = 0;
         return NULL;
@@ -143,7 +275,11 @@ unsigned char* loadPPM(const char* filename, int& width, int& height){
 
 void updateMethod(int value){
     mainGame->updateMethod();
-    glutTimerFunc(16, updateMethod, 0);
+    if(gamestatus==1){
+        glutTimerFunc(16, updateMethod, 0);
+        if(mainGame->isGameOver)
+            gamestatus = 3;
+    }
     glutPostRedisplay();
 }
 
@@ -194,10 +330,10 @@ void keyboard(unsigned char key, int x, int y){
             break;
         case 'f':
             if (firstPersonMode == OFF){
-                firstPersonMode = ON;
-                glMatrixMode(GL_PROJECTION);
-                glLoadIdentity();
-                gluPerspective(45, 1, 1, 100);
+//                firstPersonMode = ON;
+//                glMatrixMode(GL_PROJECTION);
+//                glLoadIdentity();
+//                gluPerspective(45, 1, 1, 100);
             }
             else{
                 firstPersonMode = OFF;
@@ -234,8 +370,25 @@ void keyboard(unsigned char key, int x, int y){
             lightpos1[2] -= 1;
 //            light_pos2[2] -= 10;
             break;
+        case 'S':
+        case 's':
+            if(gamestatus != 1){
+                gamestatus = 1;
+                mainGame = new game();
+                glutTimerFunc(16, updateMethod, 0);
+            }
+            break;
+        case 'P':
+        case 'p':
+            if(gamestatus != 2){
+                gamestatus = 2;
+            }else{
+                gamestatus = 1;
+                glutTimerFunc(16, updateMethod, 0);
+            }
+            break;
     }
-    printf("%f %f %f\n", lightpos1[0], lightpos1[1], lightpos1[2]);
+//    printf("%f %f %f\n", lightpos1[0], lightpos1[1], lightpos1[2]);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();

@@ -201,7 +201,7 @@ void envBlock::checkCollisions(list<particle *> listOfParticles){
 //                                    printf("%f %f",  currentTriangle->getZPosition(translateZ) , currentSurface->points[0][2]);
                                     currentParticle->reflectDirection(currentSurface->n);
                                     currentTriangle->triangleHit();
-                                    ballsToAdd += 2;
+                                    ballsToAdd += 3;
                                 }
                             }
                         
