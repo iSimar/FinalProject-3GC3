@@ -55,23 +55,27 @@ void envBlock::addToTranslateZ(float i){
 }
 
 void envBlock::draw(){
-//    printf("%f - %f\n", floor[3][2]+translateZ, floor[0][2]+translateZ);
     glPushMatrix();
     glColor3f(rgb[0]*0.5, rgb[1]*0.5, rgb[2]*0.5);
     glBegin(GL_QUADS);
-        for(int i= 0; i<4; i++)
-            glVertex3d(floor[i][0], floor[i][1], floor[i][2]);
+    for(int i= 0; i<4; i++)
+        glVertex3d(floor[i][0], floor[i][1], floor[i][2]);
     glNormal3fv(crossProduct(floor[0], floor[1]));
     glEnd();
-    glColor3f(rgb[0]*0.8, rgb[1]*0.3, rgb[2]*0.2);
     glBegin(GL_QUADS);
-        for(int i= 0; i<4; i++)
-            glVertex3d(rightWall[i][0], rightWall[i][1], rightWall[i][2]);
+    //for(int i= 0; i<4; i++)
+    glTexCoord2f(0, 0); glVertex3d(rightWall[0][0], rightWall[0][1], rightWall[0][2]);
+    glTexCoord2f(0, 1); glVertex3d(rightWall[1][0], rightWall[1][1], rightWall[1][2]);
+    glTexCoord2f(1, 1); glVertex3d(rightWall[2][0], rightWall[2][1], rightWall[2][2]);
+    glTexCoord2f(1, 0); glVertex3d(rightWall[3][0], rightWall[3][1], rightWall[3][2]);
     glNormal3fv(crossProduct(rightWall[0], rightWall[1]));
     glEnd();
     glBegin(GL_QUADS);
-    for(int i= 0; i<4; i++)
-        glVertex3d(leftWall[i][0], leftWall[i][1], leftWall[i][2]);
+    //for(int i= 0; i<4; i++)
+    glTexCoord2f(0, 0); glVertex3d(leftWall[0][0], leftWall[0][1], leftWall[0][2]);
+    glTexCoord2f(0, 1); glVertex3d(leftWall[1][0], leftWall[1][1], leftWall[1][2]);
+    glTexCoord2f(1, 1); glVertex3d(leftWall[2][0], leftWall[2][1], leftWall[2][2]);
+    glTexCoord2f(1, 0); glVertex3d(leftWall[3][0], leftWall[3][1], leftWall[3][2]);
     glNormal3fv(crossProduct(leftWall[0], leftWall[1]));
     glEnd();
     glColor3f(rgb[0], rgb[1], rgb[2]);
@@ -80,7 +84,7 @@ void envBlock::draw(){
         glVertex3d(ceiling[i][0], ceiling[i][1], ceiling[i][2]);
     glNormal3fv(crossProduct(ceiling[0], ceiling[1]));
     glEnd();
-    glPopMatrix();
+    glPopMatrix();    
     
     for(list<triangle *>::iterator i = listOfTriangles.begin(); i != listOfTriangles.end(); ++i){
         triangle * currentTriangle = *i;

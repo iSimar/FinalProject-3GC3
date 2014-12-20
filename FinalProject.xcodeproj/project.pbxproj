@@ -36,6 +36,7 @@
 		9A3892641A448DCC002046B0 /* triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = triangle.h; sourceTree = "<group>"; };
 		9A38926C1A45499A002046B0 /* glass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = glass.cpp; sourceTree = "<group>"; };
 		9A38926D1A45499A002046B0 /* glass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glass.h; sourceTree = "<group>"; };
+		9A3892761A4588FD002046B0 /* Brickwall.ppm */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brickwall.ppm; sourceTree = "<group>"; };
 		9A3E4CFD1A3E663600FDC8A9 /* surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = surface.cpp; sourceTree = "<group>"; };
 		9A3E4CFE1A3E663600FDC8A9 /* surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = surface.h; sourceTree = "<group>"; };
 		9A8A41081A34BABE0024B665 /* FinalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FinalProject; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +87,7 @@
 		9A8A410A1A34BABE0024B665 /* FinalProject */ = {
 			isa = PBXGroup;
 			children = (
+				9A3892761A4588FD002046B0 /* Brickwall.ppm */,
 				9A38926C1A45499A002046B0 /* glass.cpp */,
 				9A38926D1A45499A002046B0 /* glass.h */,
 				9A3892631A448DCC002046B0 /* triangle.cpp */,

@@ -251,9 +251,9 @@ void initFog(){
     glClearColor(0.5f,0.5f,0.5f,1.0f);          // We'll Clear To The Color Of The Fog ( Modified )
     glFogi(GL_FOG_MODE, fogMode[fogfilter]);        // Fog Mode
     glFogfv(GL_FOG_COLOR, fogColor);            // Set Fog Color
-    glFogf(GL_FOG_DENSITY, 0.2f);              // How Dense Will The Fog Be
+    glFogf(GL_FOG_DENSITY, 0.9f);              // How Dense Will The Fog Be
     glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
-    glFogf(GL_FOG_START, 0.0f);             // Fog Start Depth
+    glFogf(GL_FOG_START, 20.0f);             // Fog Start Depth
     glFogf(GL_FOG_END, 100.0f);               // Fog End Depth
     glEnable(GL_FOG);                   // Enables GL_FOG
 }
@@ -288,6 +288,36 @@ void init(void){
 
     
     gluPerspective(45, 1, 1, 100);
+    
+    glEnable(GL_TEXTURE_2D);   // enable texture mapping
+    glShadeModel(GL_SMOOTH);   // enable smooth shading
+//    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  // black background
+    glClearDepth(1.0f);        // depth buffer setup
+    glDepthFunc(GL_LEQUAL);    // configure depth testing
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);          // really nice perspective calculations
+}
+
+void loadTexture(){
+    GLuint texture[1];     // storage for one texture
+    int twidth, theight;   // texture width/height [pixels]
+    unsigned char* tdata;  // texture pixel data
+    
+    // Load image file
+    tdata = loadPPM("Brickwall.ppm", twidth, theight);
+    if (tdata==NULL) return;
+    
+    // Create ID for texture
+    glGenTextures(1, &texture[0]);
+    
+    // Set this texture to be the one we are working with
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    
+    // Generate the texture
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, twidth, theight, 0, GL_RGB, GL_UNSIGNED_BYTE, tdata);
+    
+    // Set bi-linear filtering for both minification and magnification
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 int main(int argc, char ** argv){
@@ -306,6 +336,7 @@ int main(int argc, char ** argv){
     glutTimerFunc(16, updateMethod, 0);
     
     glEnable(GL_DEPTH_TEST);
+    loadTexture();
     init();
     glutMainLoop();
     return 0;
