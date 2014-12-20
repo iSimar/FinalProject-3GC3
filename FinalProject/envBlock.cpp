@@ -66,6 +66,7 @@ void envBlock::addToTranslateZ(float i){
 }
 
 void envBlock::draw(){
+    int x, y = 0;
     glPushMatrix();
     glColor3f(rgb[0], rgb[1], rgb[2]);
     glBegin(GL_QUADS);
